@@ -1,0 +1,13 @@
+.not-found-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.traffic-list-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   
+}

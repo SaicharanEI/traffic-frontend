@@ -1,0 +1,202 @@
+/* .detail-traffic-light {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.detail-traffic-light-colors-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: black;
+    padding: 30px;
+    border-radius: 25px;
+    width: 100px;
+}
+.detail-traffic-light-color{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%; 
+}
+.detail-traffic-light-time{
+    width: 90px;
+    height: 50px;
+    color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 2px solid red;
+    font-size: 34px;
+    font-weight: bold;
+}
+
+
+ */
+
+
+ .detail-traffic-light {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 30px;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .trafficlight {
+    background: #222;
+    background-image: linear-gradient(transparent 2%, #111 2%, transparent 3%, #111 30%);
+    width: 100px;
+    height: 260px;
+    border-radius: 20px;
+    position: relative;
+    border: solid 5px #333;
+  }
+
+ 
+  .trafficlight:before {
+    /* background: #222;
+    background-image: radial-gradient(#444, #000);
+    content: "";
+    width: 170px;
+    height: 150px;
+    margin: 0 auto;
+    position: absolute;
+    top: -20px;
+ margin-left: 0px; 
+    border-radius: 50%;
+    z-index: -1; */
+  }
+  
+  .trafficlight:before {
+    background: #222;
+    /* background-image: linear-gradient(-0deg,  #000); */
+    content: "";
+    width: 30px;
+    height: 320px;
+    margin-left: -15px;
+    position: absolute;
+    top: 150px;
+    z-index: -1;
+  }
+  
+  .protector {
+    background: transparent;
+    width: 120px;
+    height: 0;
+    position: absolute;
+    top: 10px;
+    left: -40px;
+    border-right: solid 30px transparent;
+    border-left: solid 30px transparent;
+    border-top: solid 85px #111;
+    border-radius: 10px;
+    z-index: -1;
+  }
+  
+  .protector:nth-child(2) {
+    top: 90px;
+  }
+  
+  .protector:nth-child(3) {
+    top: 170px;
+  }
+  .protector:nth-child(4) {
+    top: 240px;
+  }
+
+  .red, .yellow, .green {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    position: absolute;
+    left: 13px;
+    border: dotted 2px;
+  }
+  
+  .red {
+    top: 10px;
+    border-color: red;
+  }
+  
+  .yellow {
+    top: 90px;
+    border-color: yellow;
+  }
+  
+  .green {
+    top: 170px;
+    border-color: green;
+  }
+  
+  @keyframes red {
+    0% { opacity: 1; }
+    20% { opacity: 1; }
+    40% { opacity: 1; }
+    60% { opacity: 0.1; }
+    80% { opacity: 0.1; }
+    100% { opacity: 0.1; }
+  }
+  
+  @keyframes yellow {
+    0% { opacity: 0.1; }
+    20% { opacity: 0.1; }
+    40% { opacity: 1; }
+    50% { opacity: 0.1; }
+    60% { opacity: 0.1; }
+    80% { opacity: 0.1; }
+    100% { opacity: 0.1; }
+  }
+  
+  @keyframes green {
+    0% { opacity: 0.1; }
+    20% { opacity: 0.1; }
+    40% { opacity: 0.1; }
+    60% { opacity: 1; }
+    80% { opacity: 1; }
+    83% { opacity: 0.1; }
+    86% { opacity: 1; }
+    89% { opacity: 0.1; }
+    93% { opacity: 1; }
+    96% { opacity: 0.1; }
+    100% { opacity: 1; }
+  }
+  
+  .time-container{
+    margin-top: 270px;
+    background: #222;
+    background-image: linear-gradient(transparent 2%, #111 2%, transparent 3%, #111 30%);
+    width: 100px;
+    height: 70px;
+    border-radius: 20px;
+    position: relative;
+    border: solid 5px #333;
+    display: flex;
+    margin-left: -5px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .detail-traffic-light-time {
+    width: 90%;
+    height: 90%;
+    color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    border: 2px dotted red;
+    font-size: 40px ;
+    font-weight: bold;
+    /* position: absolute;
+    content: '';  
+    background: radial-gradient(circle, transparent 50%, transparent 50%),
+    radial-gradient(circle, red 20%, black 50%) 30px 30px;
+    background-size:4px 4px; */
+   
+  }
+  

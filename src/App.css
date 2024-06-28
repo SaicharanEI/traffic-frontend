@@ -1,0 +1,94 @@
+#root {
+  /* max-width: 1280px; */
+  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  overflow-y: scroll;
+}
+
+
+.app-main-button{
+  background-color: #293b51;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  padding:  10px;
+  cursor: pointer;
+}
+
+.app-input-container{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 350px;
+  max-width: 100%;
+}
+
+@media (min-width: 552px) {
+  .app-input-container{
+    min-width: 50%;
+  }
+}
+
+@media (min-width: 992px) {
+  .app-input-container{
+    min-width: 30%;
+  }
+}
+
+.app-input-label{
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.app-input-field{
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 12px;
+  padding: 2px 5px;
+  height: 18px;
+  width: 160px;
+  background-color: transparent;
+}
+.app-select-field{
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 12px;
+  padding: 2px 5px;
+  height: 18px;
+  width: 160px;
+  color: #000;
+  background-color: transparent;
+}
+.app-form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  align-items:center;
+  justify-content: center;
+  min-height: 100%;
+  max-width: 100%;
+  overflow-y: auto;
+}
+.not-found-image{
+  width: 400px;
+  height: 400px;
+}
+
+.app-main-heading{
+  font-size: 28px;
+  font-weight: 700;
+  color: #293b51;
+}
+.app-main-heading2{
+  font-size: 22px;
+  font-weight: 700;
+}
