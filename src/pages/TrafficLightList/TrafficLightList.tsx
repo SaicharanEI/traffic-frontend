@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,10 +12,12 @@ import { useNavigate } from "react-router-dom";
 import { TrafficLight } from "../../store/trafficSlice";
 import "../../App.css";
 import "./TrafficLightList.css";
-import useFetch from "../../utils/service";
-import TrafficLightItem from "./TrafficLightItem";
 import Spinner from "../../utils/Spinner/Spinner";
 import { MouseEvent } from "react";
+import { deleteLightById, fetchLights } from "../../utils/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Toast from "../../utils/Toast";
+import DetailedTrafficLightApi from "../../utils/UseTrafficApi";
 
 const columns = [
   { id: "id", label: "id", minWidth: 100, align: "center" },
@@ -28,23 +30,28 @@ const columns = [
 export default function TrafficList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { fetchData, state } = useFetch<TrafficLight[]>();
-  const [trafficLights, setTrafficLights] = useState<TrafficLight[]>([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchData("trafficlights", "GET");
-  }, []);
+  const { isLoading, data } = useQuery({
+    queryKey: ["fetchLights"],
+    queryFn: fetchLights,
+    staleTime: Infinity,
+  });
 
-  useEffect(() => {
-    if (state.data) {
-      setTrafficLights(state.data);
-    }
-  }, [state.data]);
+  const queryClient = useQueryClient();
 
-  // const handleChangePage = (newPage: number) => {
-  //   setPage(newPage);
-  // };
+  queryClient.invalidateQueries({ queryKey: ["DetailedTrafficLight"] });
+  const { mutate: deleteLight } = useMutation({
+    mutationFn: deleteLightById,
+    onSuccess: (responseData) => {
+      queryClient.invalidateQueries({ queryKey: ["fetchLights"] });
+      Toast.fire({
+        icon: "success",
+        title: responseData.message,
+      });
+    },
+  });
+  // console.log(deleteLightError, deletePostLoading, "deleteLightError");
 
   const handleChangePage = (
     event: MouseEvent<HTMLButtonElement> | null,
@@ -68,15 +75,14 @@ export default function TrafficList() {
     if (!confirmDeletion) {
       return;
     }
-    await fetchData("deletetrafficlight/" + id, "DELETE");
-    await fetchData("trafficlights", "GET");
+    deleteLight(id);
   };
 
-  if (state.loading) {
+  if (isLoading) {
     return <Spinner />;
   }
 
-  if (trafficLights.length === 0 && !state.loading) {
+  if (data.data.length === 0 && !isLoading) {
     return (
       <div className="not-found-container">
         <h1 className="app-main-heading">No Traffic Lights Found</h1>
@@ -126,9 +132,9 @@ export default function TrafficList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {trafficLights
+              {data.data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((light) => (
+                .map((light: TrafficLight) => (
                   <TableRow
                     hover
                     role="checkbox"
@@ -142,8 +148,12 @@ export default function TrafficList() {
                         {column.id === "name" && light[column.id]}
                         {column.id === "location" && light[column.id]}
                         {column.id === "lights" && (
-                          <TrafficLightItem lightId={light.id} />
+                          <DetailedTrafficLightApi lightId={light.id} />
                         )}
+
+                        {/* {column.id === "lights" && (
+                          <TrafficLightItem lightId={light.id} />
+                        )} */}
                         {column.id === "actions" && (
                           <div>
                             <MdEditSquare
@@ -182,7 +192,7 @@ export default function TrafficList() {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={trafficLights.length}
+          count={data.data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

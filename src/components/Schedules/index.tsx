@@ -67,6 +67,7 @@ export default function ScheduleComponent({
           <input
             className="app-input-field"
             type="number"
+            min="0"
             id={`redDuration-${index}`}
             value={schedule.redDuration}
             onChange={(e) =>
@@ -90,6 +91,7 @@ export default function ScheduleComponent({
             className="app-input-field"
             type="number"
             id={`yellowDuration-${index}`}
+            min="0"
             value={schedule.yellowDuration}
             onChange={(e) =>
               handleScheduleChange(
@@ -106,6 +108,7 @@ export default function ScheduleComponent({
             Green Duration (seconds):
           </label>
           <input
+            min="0"
             className="app-input-field"
             type="number"
             id={`greenDuration-${index}`}

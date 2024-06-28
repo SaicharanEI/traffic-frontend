@@ -1,42 +1,33 @@
 import { useParams } from "react-router-dom";
 import useTrafficLight from "../../utils/UseTrafficLight";
 import "./DetailTrafficLight.css";
+import { fetchLightById } from "../../utils/api";
+import { useQuery } from "@tanstack/react-query";
 
 function TrafficLightDetail() {
   const lightId = Number(useParams<{ id: string }>().id);
+
+  const { isLoading, isFetched, data, isError } = useQuery({
+    queryKey: ["DetailedTrafficLight", lightId],
+    queryFn: () => fetchLightById(lightId),
+    staleTime: Infinity,
+  });
   const {
     remainingTime,
     currentColorIndex,
     trafficLight,
     setCurrentColorIndex,
-  } = useTrafficLight(lightId);
+  } = useTrafficLight(data?.data);
 
-  if (!trafficLight) {
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (!data.data) {
     return <div>Traffic Light not found</div>;
   }
 
   const colors = ["red", "yellow", "green"];
-
-  //   return (
-  //     <div className="detail-traffic-light">
-  //       <h1 className="app-main-heading">Traffic Light Details</h1>
-  //       <h2 className="app-main-heading"> {trafficLight.location}</h2>
-  //       <div className="detail-traffic-light-colors-container">
-  //         {colors.map((color, index) => (
-  //           <div
-  //             onClick={() => setCurrentColorIndex(index)}
-  //             className="detail-traffic-light-color"
-  //             key={color}
-  //             style={{
-  //               backgroundColor: index === currentColorIndex ? color : "grey",
-  //             }}
-  //           />
-  //         ))}
-  //         <div className="detail-traffic-light-time">{remainingTime}</div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="detail-traffic-light">

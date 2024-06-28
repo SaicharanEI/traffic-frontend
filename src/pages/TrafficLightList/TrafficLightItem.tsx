@@ -1,9 +1,9 @@
+import { TrafficLight } from "../../store/trafficSlice";
 import useTrafficLight from "../../utils/UseTrafficLight";
 import "./TrafficLightItem.css";
-const TrafficLightItem = ({ lightId }: { lightId: number }) => {
+const TrafficLightItem = ({ light }: { light: TrafficLight }) => {
   const { remainingTime, currentColorIndex, trafficLight } =
-    useTrafficLight(lightId);
-
+    useTrafficLight(light);
   if (!trafficLight) {
     return <h1 className="app-main-heading">Traffic Light not found</h1>;
   }

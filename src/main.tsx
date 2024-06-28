@@ -9,6 +9,10 @@ import "./index.css";
 import { PersistGate } from "redux-persist/integration/react";
 import persistStore from "redux-persist/es/persistStore";
 import theme from "./utils/theme";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient();
 
 let persistor = persistStore(store);
 
@@ -16,11 +20,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <PersistGate persistor={persistor}>
-          <ThemeProvider theme={theme}>
+        {/* <PersistGate persistor={persistor}> */}
+        <ThemeProvider theme={theme}>
+          <QueryClientProvider client={queryClient}>
             <App />
-          </ThemeProvider>
-        </PersistGate>
+            <ReactQueryDevtools client={queryClient} />
+          </QueryClientProvider>
+        </ThemeProvider>
+        {/* </PersistGate> */}
       </BrowserRouter>
     </Provider>
   </React.StrictMode>
