@@ -7,17 +7,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { MdDelete, MdEditSquare, MdVisibility } from "react-icons/md";
+import { MdDelete, MdEditSquare } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { TrafficLight } from "../../store/trafficSlice";
 import "../../App.css";
-import "./TrafficLightList.css";
+import "./index.css";
 import Spinner from "../../utils/Spinner/Spinner";
 import { MouseEvent } from "react";
 import { deleteLightById, fetchLights } from "../../utils/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Toast from "../../utils/Toast";
-import DetailedTrafficLightApi from "../../utils/UseTrafficApi";
+import TrafficLightItem from "./TrafficLightItem";
 
 const columns = [
   { id: "id", label: "id", minWidth: 100, align: "center" },
@@ -27,11 +27,10 @@ const columns = [
   { id: "actions", label: "Actions", minWidth: 100, align: "center" },
 ];
 
-export default function TrafficList() {
+const TrafficList = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
-
   const { isLoading, data } = useQuery({
     queryKey: ["fetchLights"],
     queryFn: fetchLights,
@@ -51,7 +50,6 @@ export default function TrafficList() {
       });
     },
   });
-  // console.log(deleteLightError, deletePostLoading, "deleteLightError");
 
   const handleChangePage = (
     event: MouseEvent<HTMLButtonElement> | null,
@@ -87,7 +85,7 @@ export default function TrafficList() {
       <div className="not-found-container">
         <h1 className="app-main-heading">No Traffic Lights Found</h1>
         <img
-          src={import.meta.env.PUBLIC_URL + "notfound.jpg"}
+          src={"./notfound.jpg"}
           alt="No Traffic Lights Found"
           className="not-found-image"
         />
@@ -148,12 +146,8 @@ export default function TrafficList() {
                         {column.id === "name" && light[column.id]}
                         {column.id === "location" && light[column.id]}
                         {column.id === "lights" && (
-                          <DetailedTrafficLightApi lightId={light.id} />
-                        )}
-
-                        {/* {column.id === "lights" && (
                           <TrafficLightItem lightId={light.id} />
-                        )} */}
+                        )}
                         {column.id === "actions" && (
                           <div>
                             <MdEditSquare
@@ -172,14 +166,12 @@ export default function TrafficList() {
                                 onClickDeleteTrafficLight(light.id)
                               }
                             />
-                            <MdVisibility
+                            {/* <MdVisibility
                               style={{ cursor: "pointer" }}
                               color="blue"
                               size={25}
-                              onClick={() =>
-                                navigate(`/traffic-light/${light.id}`)
-                              }
-                            />
+                              // onClick={handleViewTrafficLight} // Placeholder for your logic
+                            /> */}
                           </div>
                         )}
                       </TableCell>
@@ -201,4 +193,6 @@ export default function TrafficList() {
       </Paper>
     </div>
   );
-}
+};
+
+export default TrafficList;

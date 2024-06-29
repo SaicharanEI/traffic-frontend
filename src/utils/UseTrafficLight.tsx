@@ -1,70 +1,149 @@
+// import { useEffect, useState } from "react";
+// import { TrafficLightSchedule, TrafficLight } from "../store/trafficSlice";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import { updatetrafficlightColor } from "./api";
+// import useTrafficLightHook from "./useTrafficLighHookt";
+
+// export default function useTrafficLight(light: TrafficLight) {
+//   const { updateRemaningTime, updateCurrentColorIndex } = useTrafficLightHook();
+//   const [trafficLight, setTrafficLight] = useState<TrafficLight>(light);
+//   const colors = ["red", "yellow", "green"];
+//   const [remainingTime, setRemainingTime] = useState<number>(0);
+//   const [currentColorIndex, setCurrentColorIndex] = useState<number>();
+//   const queryClient = useQueryClient();
+
+//   const { mutate: updateColor } = useMutation({
+//     mutationFn: updatetrafficlightColor,
+//     // onMutate: async (variables: { lightId: number; color: string }) => {
+//     //   // Cancel any ongoing refetches for the specific query key
+//     //   await queryClient.cancelQueries({
+//     //     queryKey: ["DetailedTrafficLight", variables.lightId],
+//     //   });
+//     //   // Snapshot the previous value
+//     //   const previousTrafficLight = queryClient.getQueryData([
+//     //     "DetailedTrafficLight",
+//     //     variables.lightId,
+//     //   ]);
+
+//     //   console.log(previousTrafficLight, "previousTrafficLight");
+//     //   queryClient.setQueryData(
+//     //     ["DetailedTrafficLight", variables.lightId],
+//     //     (oldData: any) => ({
+//     //       ...oldData,
+//     //       data: {
+//     //         ...oldData.data,
+//     //         currentColor: variables.color, // Update the currentColor field inside the data object
+//     //       },
+//     //     })
+//     //   );
+
+//     //   // Return the previous value to use as rollback in case of error
+//     //   return { previousTrafficLight };
+//     // },
+
+//     // onSettled function can be used for post-mutation logic, such as refetching data
+//     onSuccess: () => {
+//       // Invalidate and refetch the data for the specific query key after mutation
+//       queryClient.invalidateQueries({
+//         queryKey: ["DetailedTrafficLight", light.id],
+//       });
+//     },
+//   });
+
+//   useEffect(() => {
+//     if (!trafficLight) return;
+//     const calculateRemainingTime = () => {
+//       const now = new Date();
+//       const currentHour = now.getHours();
+//       const currentMinute = now.getMinutes();
+//       const currentTotalMinutes = currentHour * 60 + currentMinute;
+//       let currentColor = "";
+//       let currentColorDuration;
+//       trafficLight?.schedules?.forEach((schedule: TrafficLightSchedule) => {
+//         const startTimeParts = schedule.startTime.split(":");
+//         const endTimeParts = schedule.endTime.split(":");
+//         const startHour = parseInt(startTimeParts[0], 10);
+//         const startMinute = parseInt(startTimeParts[1], 10);
+//         const endHour = parseInt(endTimeParts[0], 10);
+//         const endMinute = parseInt(endTimeParts[1], 10);
+
+//         const startTotalMinutes = startHour * 60 + startMinute;
+//         const endTotalMinutes = endHour * 60 + endMinute;
+
+//         if (
+//           currentTotalMinutes >= startTotalMinutes &&
+//           currentTotalMinutes < endTotalMinutes
+//         ) {
+//           // currentColor = trafficLight.currentColor;
+//           // setCurrentColorIndex(colors.indexOf(currentColorIndex));
+//           // // currentColorDuration =
+//           //   schedule[`${currentColor.toLowerCase()}Duration`] || 0;
+//           currentColor = light.currentColor;
+//           // setCurrentColorIndex(colorIndex);
+//           currentColorDuration =
+//             (schedule as any)[`${currentColor.toLowerCase()}Duration`] || 0;
+//         }
+//       });
+
+//       const colorIndex = colors.findIndex((color) => color === currentColor);
+//       if (colorIndex !== -1) {
+//         setCurrentColorIndex(colorIndex);
+//         setRemainingTime(Number(currentColorDuration));
+//         updateColor;
+//         updateRemaningTime(light.id, Number(currentColorDuration));
+//       }
+//     };
+
+//     calculateRemainingTime();
+
+//     const interval = setInterval(() => {
+//       setRemainingTime((prevTime: number) => {
+//         if (prevTime <= 1) {
+//           const nextColorIndex = (currentColorIndex + 1) % colors.length;
+//           const nextColor = colors[nextColorIndex];
+//           let nextColorDuration = 0;
+//           trafficLight.schedules.forEach((schedule: TrafficLightSchedule) => {
+//             nextColorDuration =
+//               (schedule as any)[`${nextColor.toLowerCase()}Duration`] || 0;
+//           });
+//           updateColor({ lightId: trafficLight.id, color: nextColor });
+//           console.log(trafficLight.id, nextColor, "from useeffect");
+//           updateCurrentColorIndex(trafficLight.id, nextColor);
+//           setCurrentColorIndex(nextColorIndex);
+//           return nextColorDuration;
+//         } else {
+//           updateRemaningTime(trafficLight.id, prevTime - 1);
+//           return prevTime - 1;
+//         }
+//       });
+//     }, 1000);
+
+//     return () => clearInterval(interval);
+//   }, [currentColorIndex, trafficLight]);
+
+//   return {
+//     currentColorIndex,
+//     remainingTime,
+//     trafficLight,
+//     setCurrentColorIndex,
+//   };
+// }
+
 import { useEffect, useState } from "react";
 import { TrafficLightSchedule, TrafficLight } from "../store/trafficSlice";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteScheduleById, updatetrafficlightColor } from "./api";
 
-export default function useTrafficLight(light: TrafficLight) {
-  const [trafficLight, setTrafficLight] = useState<TrafficLight>(light);
+export default function useTrafficLight(light: TrafficLight | undefined) {
+  const [trafficLight, setTrafficLight] = useState<TrafficLight | undefined>(
+    light
+  );
   const colors = ["red", "yellow", "green"];
   const [remainingTime, setRemainingTime] = useState<number>(0);
-  const [currentColorIndex, setCurrentColorIndex] = useState<number>(1);
-
-  // const fetchdata = async (lightId: number) => {
-  //   const response = await fetch(
-  //     `${import.meta.env.VITE_API_BASE_URL}trafficlight/${lightId}`
-  //   );
-
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     setTrafficLight(data.data);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchdata(lightId);
-  // }, []);
-
-  // const { isLoading, data } = useQuery({
-  //   queryKey: ["DetailedTrafficLight"],
-  //   queryFn: () => fetchLightById(Number(lightId)),
-  // });
-  // useEffect(() => {
-  //   if (data) {
-  //     setTrafficLight(data?.data);
-  //     console.log(data?.data, "from useeffect");
-  //   }
-  // }, [data]);
-  // console.log(data, isLoading, "from usequery");
-
-  const queryClient = useQueryClient();
-
-  const { mutate: updateColor } = useMutation({
-    mutationFn: updatetrafficlightColor,
-    // When mutate is called:
-    //onMutate: async (item: number, color: string) => {
-    //   // Cancel any outgoing refetches
-    //   // (so they don't overwrite our optimistic update)
-    //   await queryClient.cancelQueries({ queryKey: ["DetailedTrafficLight", light.id] });
-    //   // Snapshot the previous value
-    //   const previousTodos = queryClient.getQueryData(["DetailedTrafficLight", light.id]);
-    //   // Optimistically update to the new value
-    //   queryClient.setQueryData(["DetailedTrafficLight", light.id], (previousTodos) => {...previousTodos, curretColor: color});
-    //   // Return a context object with the snapshotted value
-    //   return { previousTodos };
-    // },
-    // If the mutation fails,
-    // use the context returned from onMutate to roll back
-    // onError: (err, newTodo, context) => {
-    //   queryClient.setQueryData(["todos"], context.previousTodos);
-    // },
-    // Always refetch after error or success:
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
-    },
-  });
+  const [currentColorIndex, setCurrentColorIndex] = useState<number>(0);
 
   useEffect(() => {
-    if (!trafficLight) return;
+    if (!light) return;
+
+    setTrafficLight(light);
 
     const calculateRemainingTime = () => {
       const now = new Date();
@@ -72,8 +151,9 @@ export default function useTrafficLight(light: TrafficLight) {
       const currentMinute = now.getMinutes();
       const currentTotalMinutes = currentHour * 60 + currentMinute;
       let currentColor = "";
-      let currentColorDuration;
-      trafficLight?.schedules?.forEach((schedule: TrafficLightSchedule) => {
+      let currentColorDuration = 0;
+
+      light.schedules?.forEach((schedule: TrafficLightSchedule) => {
         const startTimeParts = schedule.startTime.split(":");
         const endTimeParts = schedule.endTime.split(":");
         const startHour = parseInt(startTimeParts[0], 10);
@@ -89,8 +169,6 @@ export default function useTrafficLight(light: TrafficLight) {
           currentTotalMinutes < endTotalMinutes
         ) {
           currentColor = colors[currentColorIndex];
-          // currentColorDuration =
-          //   schedule[`${currentColor.toLowerCase()}Duration`] || 0;
           currentColorDuration =
             (schedule as any)[`${currentColor.toLowerCase()}Duration`] || 0;
         }
@@ -98,9 +176,8 @@ export default function useTrafficLight(light: TrafficLight) {
 
       const colorIndex = colors.findIndex((color) => color === currentColor);
       if (colorIndex !== -1) {
-        updateColor({ lightId: trafficLight.id, color: colors[colorIndex] });
         setCurrentColorIndex(colorIndex);
-        setRemainingTime(Number(currentColorDuration));
+        setRemainingTime(currentColorDuration);
       }
     };
 
@@ -112,7 +189,7 @@ export default function useTrafficLight(light: TrafficLight) {
           const nextColorIndex = (currentColorIndex + 1) % colors.length;
           const nextColor = colors[nextColorIndex];
           let nextColorDuration = 0;
-          trafficLight.schedules.forEach((schedule: TrafficLightSchedule) => {
+          light.schedules.forEach((schedule: TrafficLightSchedule) => {
             nextColorDuration =
               (schedule as any)[`${nextColor.toLowerCase()}Duration`] || 0;
           });
@@ -126,7 +203,7 @@ export default function useTrafficLight(light: TrafficLight) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [currentColorIndex, trafficLight]);
+  }, [light, currentColorIndex, trafficLight]);
 
   return {
     currentColorIndex,

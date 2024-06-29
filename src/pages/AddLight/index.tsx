@@ -1,16 +1,32 @@
-import React, { useEffect, useState } from "react";
-// import { useAppDispatch } from "../../store/hooks";
+import React, { useState } from "react";
 import { TrafficLightSchedule } from "../../store/trafficSlice";
 import "../../App.css";
-import useFetch from "../../utils/service";
 import TrafficLightComponent from "../../components/TrafficLight";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addLight } from "../../utils/api";
+import Toast from "../../utils/Toast";
 
 function AddTrafficLightForm() {
-  // const dispatch = useAppDispatch();
   const [name, setName] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [schedules, setSchedules] = useState<TrafficLightSchedule[]>([]);
-  const { fetchData, state } = useFetch();
+  const queryClient = useQueryClient();
+
+  const { mutate: postLight } = useMutation({
+    mutationFn: addLight,
+    onSuccess: (responseData) => {
+      queryClient.invalidateQueries({
+        queryKey: ["fetchLights"],
+      }),
+        Toast.fire({
+          icon: "success",
+          title: responseData.message,
+        });
+      setName("");
+      setLocation("");
+      setSchedules([]);
+    },
+  });
   const handleAddSchedule = () => {
     setSchedules([
       ...schedules,
@@ -51,19 +67,8 @@ function AddTrafficLightForm() {
       location,
       schedules,
     };
-
-    await fetchData("addtrafficlight", "POST", newTrafficLight);
+    postLight(newTrafficLight);
   };
-
-  useEffect(() => {
-    if (state) {
-      if (state.error === null && state.data && !state.loading) {
-        // setName("");
-        // setLocation("");
-        // setSchedules([]);
-      }
-    }
-  }, [state.data]);
 
   return (
     <>

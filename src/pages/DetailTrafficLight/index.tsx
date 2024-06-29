@@ -1,39 +1,29 @@
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchLightById } from "../../utils/api";
+import { useLocation, useParams } from "react-router-dom";
 import "./index.css";
+import { fetchLightById } from "../../utils/api";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 import { TrafficLightSchedule } from "../../store/trafficSlice";
-import { useNavigate } from "react-router-dom";
-import { MdVisibility } from "react-icons/md";
 
-interface TrafficLightItemProps {
-  lightId: number;
-}
+const TrafficLightDetail = () => {
+  const lightId = Number(useParams<{ id: string }>().id);
+  const firstRender = useRef(true);
 
-const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
   const { isLoading, data, isError } = useQuery({
     queryKey: ["DetailedTrafficLight", lightId],
     queryFn: () => fetchLightById(lightId),
-    staleTime: Infinity,
+    // staleTime: Infinity,
   });
 
-  const navigate = useNavigate();
   const colors = ["red", "yellow", "green"];
+  const location = useLocation();
 
-  const [remainingTime, setRemainingTime] = useState<number>(0);
-  const [currentColorIndex, setCurrentColorIndex] = useState<number>(0);
-
-  // const { mutate: updateLight } = useMutation({
-  //   mutationFn: updatetrafficlightColor,
-  //   onSuccess: (responseData) => {
-  //     queryClient.invalidateQueries({
-  //       queryKey: ["fetchLights"],
-  //     }),
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["trafficLightById"],
-  //       }),
-  //   },
-  // });
+  const [remainingTime, setRemainingTime] = useState<number>(
+    location.state.remainingTime
+  );
+  const [currentColorIndex, setCurrentColorIndex] = useState<number>(
+    location.state.currentColorIndex
+  );
 
   useEffect(() => {
     if (!data?.data) return;
@@ -69,6 +59,7 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
 
       const colorIndex = colors.findIndex((color) => color === currentColor);
       if (colorIndex !== -1) {
+        firstRender.current = false;
         setCurrentColorIndex(colorIndex);
         setRemainingTime(currentColorDuration);
       }
@@ -95,17 +86,10 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
       });
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, [currentColorIndex, data?.data]);
-
-  const handleViewTrafficLight = () => {
-    navigate(`/traffic-light/${lightId}`, {
-      state: {
-        currentColorIndex,
-        remainingTime,
-      },
-    });
-  };
 
   if (isLoading) {
     return <h1>Loading...</h1>;
@@ -114,31 +98,43 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
   if (isError || !data?.data) {
     return <h1 className="app-main-heading">Traffic Light not found</h1>;
   }
-
   return (
-    <div className="traffic-list-item">
-      <div className="traffic-list-item-colors">
+    <div className="detail-traffic-light">
+      <div className="trafficlight">
+        <div className="protector"></div>
+        <div className="protector"></div>
+        <div className="protector"></div>
+        {/* <div className="protector"></div> */}
         {colors.map((color, index) => (
           <div
             key={color}
+            className={color}
             style={{
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-              backgroundColor: index === currentColorIndex ? color : "grey",
+              backgroundColor: index === currentColorIndex ? color : "",
+              boxShadow:
+                index === currentColorIndex
+                  ? `2px 1px 25px #111 inset, 0 1px 10px ${color}`
+                  : "none",
+              // animation:
+              //   index === currentColorIndex ? `${color} 1s infinite` : "none",
             }}
+            onClick={() => setCurrentColorIndex(index)}
           />
         ))}
+        <div className="time-container">
+          <div className="detail-traffic-light-time">{remainingTime}</div>
+        </div>
       </div>
-      <div className="traffic-list-item-time">{remainingTime}</div>
-      <MdVisibility
-        onClick={handleViewTrafficLight}
-        style={{ cursor: "pointer" }}
-        color="blue"
-        size={25}
-      />
     </div>
   );
 };
 
-export default TrafficLightItem;
+export default TrafficLightDetail;
+
+// const data = queryClient.ensureQueryData({
+//   queryKey: ["DetailedTrafficLight", lightId],
+//   queryFn: () => fetchLightById(lightId),
+//   // onSuccess: () => {
+//   //   console.log("success");
+//   // },
+// });

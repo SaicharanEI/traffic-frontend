@@ -6,15 +6,15 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { store } from "./store/store";
 import "./index.css";
-import { PersistGate } from "redux-persist/integration/react";
-import persistStore from "redux-persist/es/persistStore";
+// import { PersistGate } from "redux-persist/integration/react";
+// import persistStore from "redux-persist/es/persistStore";
 import theme from "./utils/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient();
 
-let persistor = persistStore(store);
+// let persistor = persistStore(store);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

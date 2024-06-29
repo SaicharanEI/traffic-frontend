@@ -18,6 +18,11 @@ function TrafficLightEdit() {
   if (isFetched) {
     return <TrafficLightEditComponent trafficLight={data.data} />;
   }
+  return (
+    <>
+      <h1>Light not found</h1>
+    </>
+  );
 }
 
 export default TrafficLightEdit;

@@ -73,9 +73,13 @@ export const updatetrafficlightColor = async (body: any) => {
 const {lightId, color} = body
     console.log(body,color, lightId, "body", "updatelightcolor")
     const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}updatetrafficlightcolor/${lightId}?color=${color}`,   
+        `${import.meta.env.VITE_API_BASE_URL}updatetrafficlightcolor/${lightId}`,   
         {
             method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+              },
+            body: JSON.stringify({ color }),
         }
     );
     return response.json();
