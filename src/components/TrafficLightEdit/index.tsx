@@ -24,7 +24,10 @@ export function TrafficLightEditComponent({
         queryKey: ["fetchLights"],
       }),
         queryClient.invalidateQueries({
-          queryKey: ["trafficLightById"],
+          queryKey: ["DetailedTrafficLight", Number(trafficLight.id)],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["FetchTrafficLightById", Number(trafficLight.id)],
         }),
         Toast.fire({
           icon: "success",

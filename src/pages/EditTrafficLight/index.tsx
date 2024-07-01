@@ -8,7 +8,7 @@ function TrafficLightEdit() {
   const { id } = useParams<{ id: string }>();
 
   const { isLoading, isFetched, data } = useQuery({
-    queryKey: ["trafficLightById"],
+    queryKey: ["FetchTrafficLightById", Number(id)],
     queryFn: () => fetchLightById(Number(id)),
   });
 

@@ -9,7 +9,8 @@
 .traffic-list-container{
     display: flex;
     flex-direction: column;
-    justify-content: center;   
+    justify-content: center; 
+    margin: 20px;  
 }
 
 

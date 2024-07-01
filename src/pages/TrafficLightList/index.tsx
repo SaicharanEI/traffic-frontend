@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { MdDelete, MdEditSquare } from "react-icons/md";
+import { MdDelete, MdEditSquare, MdVisibility } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { TrafficLight } from "../../store/trafficSlice";
 import "../../App.css";
@@ -34,12 +34,15 @@ const TrafficList = () => {
   const { isLoading, data } = useQuery({
     queryKey: ["fetchLights"],
     queryFn: fetchLights,
+    // enabled: typeof window !== "undefined",
     staleTime: Infinity,
+    // refetchInterval: 5 * 60 * 1000,
+    // refetchOnWindowFocus: false,
+    // staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const queryClient = useQueryClient();
 
-  queryClient.invalidateQueries({ queryKey: ["DetailedTrafficLight"] });
   const { mutate: deleteLight } = useMutation({
     mutationFn: deleteLightById,
     onSuccess: (responseData) => {
@@ -80,7 +83,11 @@ const TrafficList = () => {
     return <Spinner />;
   }
 
-  if (data.data.length === 0 && !isLoading) {
+  const handleViewTrafficLight = (lightId: number) => {
+    navigate(`/traffic-light/${lightId}`);
+  };
+
+  if (data?.data && !isLoading) {
     return (
       <div className="not-found-container">
         <h1 className="app-main-heading">No Traffic Lights Found</h1>
@@ -130,7 +137,7 @@ const TrafficList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.data
+              {data?.data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((light: TrafficLight) => (
                   <TableRow
@@ -166,12 +173,12 @@ const TrafficList = () => {
                                 onClickDeleteTrafficLight(light.id)
                               }
                             />
-                            {/* <MdVisibility
+                            <MdVisibility
                               style={{ cursor: "pointer" }}
                               color="blue"
                               size={25}
-                              // onClick={handleViewTrafficLight} // Placeholder for your logic
-                            /> */}
+                              onClick={() => handleViewTrafficLight(light.id)} // Placeholder for your logic
+                            />
                           </div>
                         )}
                       </TableCell>
@@ -184,7 +191,7 @@ const TrafficList = () => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={data.data.length}
+          count={data?.data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

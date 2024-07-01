@@ -40,11 +40,10 @@ export const updateLightDetails = async (light: any) => {
 }
 
 export const fetchLightById = async (id: number) => {
-    console.log("fetch by id called")
+    console.log("fetch by id called", id)
     const response = await fetch(
         `${import.meta.env.VITE_API_BASE_URL}trafficlight/${id}`
     );
-    console.log("fetch by id called")
     return response.json();
 }
 

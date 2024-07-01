@@ -9,11 +9,31 @@ import "./index.css";
 // import { PersistGate } from "redux-persist/integration/react";
 // import persistStore from "redux-persist/es/persistStore";
 import theme from "./utils/theme";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const queryClient = new QueryClient();
+// const queryClient = new QueryClient({
+//   defaultOptions: {
+//     queries: {
+//       gcTime: 1000 * 60 * 60 * 24, // 24 hours
+//     },
+//   },
+// });
 
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 60 * 24, // 24 hours
+    },
+  },
+});
+
+const persister = createSyncStoragePersister({
+  storage: window.localStorage,
+});
 // let persistor = persistStore(store);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -22,10 +42,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         {/* <PersistGate persistor={persistor}> */}
         <ThemeProvider theme={theme}>
-          <QueryClientProvider client={queryClient}>
+          {/* <QueryClientProvider client={queryClient}> */}
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{ persister }}
+          >
             <App />
             <ReactQueryDevtools client={queryClient} />
-          </QueryClientProvider>
+            {/* </QueryClientProvider> */}
+          </PersistQueryClientProvider>
         </ThemeProvider>
         {/* </PersistGate> */}
       </BrowserRouter>
