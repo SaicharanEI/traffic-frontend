@@ -1,3 +1,5 @@
+import "../TrafficLight/index.css";
+
 export default function ScheduleComponent({
   schedule,
   index,
@@ -7,14 +9,7 @@ export default function ScheduleComponent({
   return (
     <div key={index}>
       <h3 className="app-main-heading2">Schedule {index + 1}</h3>
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          flexWrap: "wrap",
-          justifyContent: "center",
-        }}
-      >
+      <div className="schedules-container">
         <div className="app-input-container">
           <label className="app-input-label" htmlFor={`timePeriod-${index}`}>
             Time Period:
@@ -23,6 +18,7 @@ export default function ScheduleComponent({
             className="app-input-field"
             type="text"
             id={`timePeriod-${index}`}
+            placeholder="Time Period"
             value={schedule.timePeriod}
             onChange={(e) =>
               handleScheduleChange(index, "timePeriod", e.target.value)

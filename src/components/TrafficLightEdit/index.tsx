@@ -1,6 +1,9 @@
 import { useState } from "react";
 import TrafficLightComponent from "../TrafficLight";
-import { TrafficLight, TrafficLightSchedule } from "../../store/trafficSlice";
+import {
+  TrafficLight,
+  TrafficLightSchedule,
+} from "../icons/Interfaces/trafficLight";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteScheduleById, updateLightDetails } from "../../utils/api";
 import Toast from "../../utils/Toast";
@@ -17,9 +20,10 @@ export function TrafficLightEditComponent({
   );
 
   const queryClient = useQueryClient();
-  const { mutate: updateLight } = useMutation({
+  const { mutate: updateLight, isPending: updateIsPending } = useMutation({
     mutationFn: updateLightDetails,
     onSuccess: (responseData) => {
+      console.log(responseData);
       queryClient.invalidateQueries({
         queryKey: ["fetchLights"],
       }),
@@ -52,6 +56,29 @@ export function TrafficLightEditComponent({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (!name || !location) {
+      Toast.fire({
+        icon: "error",
+        title: "Name and Location are required",
+      });
+      return;
+    }
+    if (schedules.length >= 1) {
+      for (let i = 0; i < schedules.length; i++) {
+        if (
+          !schedules[i].timePeriod ||
+          !schedules[i].startTime ||
+          !schedules[i].endTime
+        ) {
+          Toast.fire({
+            icon: "error",
+            title: "All fields in schedule are required",
+          });
+          return;
+        }
+      }
+    }
+
     const updatedTrafficLight: TrafficLight = {
       ...trafficLight,
       name,
@@ -107,6 +134,7 @@ export function TrafficLightEditComponent({
       handleScheduleChange={handleScheduleChange}
       name={name}
       location={location}
+      updateIsPending={updateIsPending}
       heading="Edit Traffic Light"
     />
   );

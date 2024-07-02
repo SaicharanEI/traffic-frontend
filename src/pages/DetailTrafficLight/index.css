@@ -36,13 +36,28 @@
 
  */
 
+ .detail-traffic-light-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height:70%
+}
+
+.automatic-container{
+  display: flex;
+  justify-content: center;
+  gap:20px;
+  align-items: center;
+}
 
  .detail-traffic-light {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    margin-top: 30px;
+    justify-content: center;
     width: 100%;
     height: 100%;
   }
@@ -199,4 +214,5 @@
     background-size:4px 4px; */
    
   }
+
   

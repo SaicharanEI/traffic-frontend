@@ -1,85 +1,104 @@
-
-
+import axios from "axios";
+import Toast from "./Toast";
 export const fetchLights = async () => {
-    console.log("fetching lights")
-    const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}trafficlights`
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_BASE_URL}trafficlights`
     );
 
-    return response.json();
-}
+    return response.data;
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
 
 export const addLight = async (light: any) => {
-    const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}addtrafficlight`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(light),
-        }
-        
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_BASE_URL}addtrafficlight`,
+      light
     );
-    return response.json();
-}
+    return response.data;
+  } catch (error: any) {
+    Toast.fire({
+      icon: "error",
+      title: error.response.data.message,
+    });
+  }
+};
 
 export const updateLightDetails = async (light: any) => {
-    const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}updatetrafficlight/${light.id}`,
-        {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(light),
-        }
-        
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_BASE_URL}updatetrafficlight/${light.id}`,
+      light
     );
-    return response.json();
-}
+    return response.data;
+  } catch (error: any) {
+    Toast.fire({
+      icon: "error",
+      title: error.response.data.message,
+    });
+  }
+};
 
 export const fetchLightById = async (id: number) => {
-    console.log("fetch by id called", id)
-    const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}trafficlight/${id}`
-    );
-    return response.json();
-}
+  try{
+    const response = await axios.get(
+    `${import.meta.env.VITE_API_BASE_URL}trafficlight/${id}`
+  );
+
+  return response.data;
+}catch (error: any) {
+        console.log(error.response.data.message)
+  }
+};
 
 export const deleteLightById = async (id: number) => {
-    const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}deletetrafficlight/${id}`,
-        {
-            method: "DELETE",
-        }
+  try {
+    const response = await axios.delete(
+      `${import.meta.env.VITE_API_BASE_URL}deletetrafficlight/${id}`
     );
-    return response.json();
-}
+    return response.data;
+  } catch (error: any) {
+    Toast.fire({
+      icon: "error",
+      title: error.response.data.message,
+    });
+  }
+};
 
 export const deleteScheduleById = async (id: number) => {
-    const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}deleteschedule/${id}`,
-        {
-            method: "DELETE",
-        }
+  try {
+    const response = await axios.delete(
+      `${import.meta.env.VITE_API_BASE_URL}deleteschedule/${id}`
     );
-    return response.json();
+
+    return response.data;
+  } catch (error: any) {
+    Toast.fire({
+      icon: "error",
+      title: error.response.data.message,
+    });
+  }
+};
+
+interface changeModeProps {
+  id: number;
+  mode: boolean;
+  color: string
 }
 
-
-export const updatetrafficlightColor = async (body: any) => {
-const {lightId, color} = body
-    console.log(body,color, lightId, "body", "updatelightcolor")
-    const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}updatetrafficlightcolor/${lightId}`,   
-        {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-              },
-            body: JSON.stringify({ color }),
-        }
+export const changeAutomaticMode = async ({ id, mode, color }: changeModeProps) => {
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_BASE_URL}changeAutomaticModeById/${id}`, {mode, color}
     );
-    return response.json();
-}
+    return response.data;
+  } catch (error: any) {
+    Toast.fire({
+      icon: "error",
+      title: error.response.data.message,
+    });
+  }
+};

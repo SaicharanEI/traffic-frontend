@@ -2,9 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchLightById } from "../../utils/api";
 import "./index.css";
-import { TrafficLightSchedule } from "../../store/trafficSlice";
-// import { useNavigate } from "react-router-dom";
-// import { MdVisibility } from "react-icons/md";
+import { TrafficLightSchedule } from "../../components/icons/Interfaces/trafficLight";
 
 interface TrafficLightItemProps {
   lightId: number;
@@ -14,38 +12,30 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
   const { isLoading, data, isError } = useQuery({
     queryKey: ["DetailedTrafficLight", lightId],
     queryFn: () => fetchLightById(lightId),
-    // refetchInterval: false,
-    // refetchOnWindowFocus: false,
     staleTime: Infinity,
-    // staleTime: 10 * 60 * 1000,
-    // enabled: typeof window !== "undefined",
   });
 
   const firstRender = useRef(true);
-
   const queryClient = useQueryClient();
-  // const navigate = useNavigate();
   const colors = ["red", "yellow", "green"];
-  const [remainingTime, setRemainingTime] = useState<number>(
-    data && data?.data.timeRemaining
-  );
-
-  const [currentColorIndex, setCurrentColorIndex] = useState<number>(
-    data ? colors.findIndex((color) => color === data?.data.currentColor) : 0
-  );
+  const [remainingTime, setRemainingTime] = useState<number>(0);
+  const [currentColorIndex, setCurrentColorIndex] = useState<number>(1);
+  const [mode, setMode] = useState<boolean>(false);
 
   useEffect(() => {
-    setRemainingTime(data?.data.timeRemaining);
-    setCurrentColorIndex(
-      data && colors.findIndex((color) => color === data?.data.currentColor)
-    );
+    if (firstRender.current) {
+      setCurrentColorIndex(
+        data && colors.findIndex((color) => color === data?.data.currentColor)
+      );
+      setMode(data?.data.isAutomatic);
+      setRemainingTime(data?.data.timeRemaining);
+    }
   }, [data?.data]);
 
   useEffect(() => {
     if (!data?.data) return;
-
+    if (!mode) return;
     const calculateRemainingTime = () => {
-      console.log("calculateRemainingTime called", firstRender.current);
       const now = new Date();
       const currentHour = now.getHours();
       const currentMinute = now.getMinutes();
@@ -64,7 +54,6 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
 
         const startTotalMinutes = startHour * 60 + startMinute;
         const endTotalMinutes = endHour * 60 + endMinute;
-
         if (
           currentTotalMinutes >= startTotalMinutes &&
           currentTotalMinutes < endTotalMinutes
@@ -78,18 +67,17 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
 
       const colorIndex = colors.findIndex((color) => color === currentColor);
       if (colorIndex !== -1) {
-        // setCurrentColorIndex(colorIndex);
-
-        if (!firstRender.current === true) {
+        if (!firstRender.current) {
           setRemainingTime(currentColorDuration);
         }
       }
+
       if (!scheduleMatched) {
         setRemainingTime(0);
         setCurrentColorIndex(1);
-        scheduleMatched = true; // Default to yellow if no schedule matched
       }
     };
+
     calculateRemainingTime();
 
     const interval = setInterval(() => {
@@ -109,7 +97,7 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
               ...oldData,
               data: {
                 ...oldData.data,
-                currentColor: nextColor, // Update the currentColor field inside the data object
+                currentColor: nextColor,
               },
             })
           );
@@ -125,7 +113,6 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
             })
           );
           setCurrentColorIndex(nextColorIndex);
-
           return nextColorDuration;
         } else {
           queryClient.setQueryData(
@@ -144,16 +131,7 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [currentColorIndex]);
-
-  // const handleViewTrafficLight = () => {
-  //   navigate(`/traffic-light/${lightId}`, {
-  //     state: {
-  //       currentColorIndex,
-  //       remainingTime,
-  //     },
-  //   });
-  // };
+  }, [currentColorIndex, mode]);
 
   if (isLoading) {
     return <h1>Loading...</h1>;
@@ -179,12 +157,6 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
         ))}
       </div>
       <div className="traffic-list-item-time">{remainingTime}</div>
-      {/* <MdVisibility
-        onClick={handleViewTrafficLight}
-        style={{ cursor: "pointer" }}
-        color="blue"
-        size={25}
-      /> */}
     </div>
   );
 };

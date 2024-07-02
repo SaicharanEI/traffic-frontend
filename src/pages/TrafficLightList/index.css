@@ -6,11 +6,18 @@
     gap: 10px;
 }
 
+.traffic-list-header{
+    display: flex; /* Use flexbox */
+  justify-content: space-between;
+  align-items: center;
+}
+
 .traffic-list-container{
     display: flex;
     flex-direction: column;
     justify-content: center; 
     margin: 20px;  
+    margin-top: 0px;
 }
 
 

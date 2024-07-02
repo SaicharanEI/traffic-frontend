@@ -1,3 +1,4 @@
+import Button from "../../utils/Button";
 import ScheduleComponent from "../Schedules";
 import "./index.css";
 
@@ -12,7 +13,9 @@ export default function TrafficLightComponent({
   setName,
   setLocation,
   heading,
+  updateIsPending,
 }: any) {
+  console.log(name, location);
   return (
     <form className="app-form" onSubmit={handleSubmit}>
       <h1 style={{ margin: "0px" }} className="app-main-heading">
@@ -35,6 +38,7 @@ export default function TrafficLightComponent({
             className="app-input-field"
             type="text"
             id="name"
+            placeholder="Name of Traffic Light"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -46,6 +50,7 @@ export default function TrafficLightComponent({
           </label>
           <input
             className="app-input-field"
+            placeholder="Location of Traffic Light"
             type="text"
             id="location"
             value={location}
@@ -63,13 +68,12 @@ export default function TrafficLightComponent({
           handleRemoveSchedule={handleRemoveSchedule}
         />
       ))}
-      <button
-        style={{ marginTop: "20px", alignSelf: "center" }}
-        type="submit"
-        className="app-main-button"
-      >
-        {heading}
-      </button>
+      <Button
+        text={heading}
+        onSubmit={handleSubmit}
+        loading={updateIsPending}
+        disabled={updateIsPending}
+      />
     </form>
   );
 }

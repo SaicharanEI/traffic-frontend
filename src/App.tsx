@@ -8,7 +8,7 @@ import TrafficLightEdit from "./pages/EditTrafficLight";
 function App() {
   return (
     <Routes>
-      <Route path="*" element={<NotFound />} />
+      <Route path="*" element={<NotFound heading="page not found" />} />
       <Route path="/add-traffic-light" element={<AddTrafficLightForm />} />
       <Route path="/" element={<TrafficLightList />} />
       <Route path="/traffic-light">

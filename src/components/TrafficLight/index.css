@@ -1,9 +1,90 @@
+.app-form{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    min-height: 70%;
+    max-width: 100%;
+    overflow-y: auto;
+    background-color: #dff1f2;
+    margin : 5% 10% 5% 10%;
+  }
+
+  @media (min-width: 992px){
+    .app-form{
+      max-width: 60%;
+      margin: 5% 20% 5% 20%;
+    }
+  }
+
+@media (max-width: 600px) {
+    .app-form{
+      min-height: 90%;
+    }
+}
+
+
 .app-form-container1{
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
     flex-direction: row;
+    flex-wrap: wrap;
+    gap:10px;
     justify-content: center;
     align-items: center;
-    margin: 5px;
+    max-width: 500px;
 }
+.schedules-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.app-input-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px;
+    width: 250px;
+  }
+  
+  .app-input-label{
+    align-self: flex-start;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .app-input-field{
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 12px;
+    padding: 2px 5px;
+    height: 26px;
+    border: none;
+    width: 100%;
+    background-color: #fafcfa;
+  }
+
+  .app-input-field:hover{
+    border: #293b51 2px solid;
+    height: 22px;
+  }
+
+  .app-select-field{
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    padding: 2px 5px;
+    height: 26px;
+    width: 100%;
+    color: #000;
+    border: none;
+    background-color: fafcfa;
+  }
+  .app-select-field:hover{
+    border: #293b51 2px solid;
+    height: 22px;
+  }
+ 
+
+

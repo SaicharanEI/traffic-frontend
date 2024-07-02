@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TrafficLightSchedule } from "../../store/trafficSlice";
+import { TrafficLightSchedule } from "../../components/icons/Interfaces/trafficLight";
 import "../../App.css";
 import TrafficLightComponent from "../../components/TrafficLight";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -12,8 +12,14 @@ function AddTrafficLightForm() {
   const [schedules, setSchedules] = useState<TrafficLightSchedule[]>([]);
   const queryClient = useQueryClient();
 
-  const { mutate: postLight } = useMutation({
+  const { mutate: postLight, isPending: postIsPending } = useMutation({
     mutationFn: addLight,
+    onError: (responseData) => {
+      Toast.fire({
+        icon: "error",
+        title: responseData.message,
+      });
+    },
     onSuccess: (responseData) => {
       queryClient.invalidateQueries({
         queryKey: ["fetchLights"],
@@ -61,12 +67,36 @@ function AddTrafficLightForm() {
   const handleSubmit = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
 
+    if (!name || !location) {
+      Toast.fire({
+        icon: "error",
+        title: "Name and Location are required",
+      });
+      return;
+    }
+    if (schedules.length >= 1) {
+      for (let i = 0; i < schedules.length; i++) {
+        if (
+          !schedules[i].timePeriod ||
+          !schedules[i].startTime ||
+          !schedules[i].endTime
+        ) {
+          Toast.fire({
+            icon: "error",
+            title: "All fields in schedule are required",
+          });
+          return;
+        }
+      }
+    }
+
     const newTrafficLight = {
       name,
-      currentColor: "red",
+      currentColor: "yellow",
       location,
       schedules,
     };
+
     postLight(newTrafficLight);
   };
 
@@ -82,6 +112,7 @@ function AddTrafficLightForm() {
         handleScheduleChange={handleScheduleChange}
         name={name}
         location={location}
+        updateIsPending={postIsPending}
         heading="Add Traffic Light"
       />
     </>

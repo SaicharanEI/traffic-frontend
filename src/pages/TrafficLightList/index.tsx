@@ -9,7 +9,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { MdDelete, MdEditSquare, MdVisibility } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { TrafficLight } from "../../store/trafficSlice";
+import { TrafficLight } from "../../components/icons/Interfaces/trafficLight";
 import "../../App.css";
 import "./index.css";
 import Spinner from "../../utils/Spinner/Spinner";
@@ -18,6 +18,7 @@ import { deleteLightById, fetchLights } from "../../utils/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Toast from "../../utils/Toast";
 import TrafficLightItem from "./TrafficLightItem";
+import NotFound from "../NotFound/NotFound";
 
 const columns = [
   { id: "id", label: "id", minWidth: 100, align: "center" },
@@ -34,11 +35,7 @@ const TrafficList = () => {
   const { isLoading, data } = useQuery({
     queryKey: ["fetchLights"],
     queryFn: fetchLights,
-    // enabled: typeof window !== "undefined",
     staleTime: Infinity,
-    // refetchInterval: 5 * 60 * 1000,
-    // refetchOnWindowFocus: false,
-    // staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const queryClient = useQueryClient();
@@ -59,7 +56,7 @@ const TrafficList = () => {
     newPage: number
   ) => {
     if (event) {
-      event.preventDefault(); // Ensure event is not null before using it
+      event.preventDefault();
     }
     setPage(newPage);
   };
@@ -87,34 +84,37 @@ const TrafficList = () => {
     navigate(`/traffic-light/${lightId}`);
   };
 
-  if (data?.data && !isLoading) {
+  if (data?.data?.length === 0 && !isLoading) {
     return (
-      <div className="not-found-container">
-        <h1 className="app-main-heading">No Traffic Lights Found</h1>
-        <img
-          src={"./notfound.jpg"}
-          alt="No Traffic Lights Found"
-          className="not-found-image"
-        />
+      <>
+        <NotFound heading="No Traffic Lights Found" />
         <button
           className="app-main-button"
           onClick={() => navigate("/add-traffic-light")}
         >
           Add Traffic Light
         </button>
-      </div>
+      </>
     );
   }
 
   return (
     <div className="traffic-list-container">
-      <button
-        style={{ alignSelf: "flex-end", margin: "10px" }}
-        onClick={() => navigate("/add-traffic-light")}
-        className="app-main-button"
-      >
-        Add Traffic Light
-      </button>
+      <div className="traffic-list-header">
+        <h1
+          className="app-main-heading"
+          style={{ textAlign: "center", flex: "1" }}
+        >
+          Traffic Lights
+        </h1>
+        <button
+          style={{ marginLeft: "auto" }}
+          onClick={() => navigate("/add-traffic-light")}
+          className="app-main-button"
+        >
+          Add Traffic Light
+        </button>
+      </div>
       <Paper sx={{ overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -138,7 +138,7 @@ const TrafficList = () => {
             </TableHead>
             <TableBody>
               {data?.data
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((light: TrafficLight) => (
                   <TableRow
                     hover
@@ -191,7 +191,7 @@ const TrafficList = () => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={data?.data.length}
+          count={data?.data?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
