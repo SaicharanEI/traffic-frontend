@@ -6,6 +6,26 @@ export default function ScheduleComponent({
   handleScheduleChange,
   handleRemoveSchedule,
 }: any) {
+  const getHoursMinutes = (time: any) => {
+    if (!time) return "";
+    const startTimeparts = time.split("T")[1];
+    const [startHours, startMinutes] = startTimeparts.split(":");
+    const startHour = parseInt(startHours, 10);
+    const startMinute = parseInt(startMinutes, 10);
+    return `${startHour.toString().padStart(2, "0")}:${startMinute
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  const handleTimeChange = (index: number, key: any, value: any) => {
+    const [hours, minutes] = value.split(":");
+    const date = new Date(schedule[key]);
+    date.setUTCHours(hours);
+    date.setUTCMinutes(minutes);
+    console.log("MySQL datetime - " + date.toISOString());
+    handleScheduleChange(index, key, date.toISOString());
+  };
+
   return (
     <div key={index}>
       <h3 className="app-main-heading2">Schedule {index + 1}</h3>
@@ -34,9 +54,9 @@ export default function ScheduleComponent({
             className="app-select-field"
             type="time"
             id={`startTime-${index}`}
-            value={schedule.startTime}
+            value={getHoursMinutes(schedule.startTime)}
             onChange={(e) =>
-              handleScheduleChange(index, "startTime", e.target.value)
+              handleTimeChange(index, "startTime", e.target.value)
             }
             required
           />
@@ -49,10 +69,8 @@ export default function ScheduleComponent({
             className="app-select-field"
             type="time"
             id={`endTime-${index}`}
-            value={schedule.endTime}
-            onChange={(e) =>
-              handleScheduleChange(index, "endTime", e.target.value)
-            }
+            value={getHoursMinutes(schedule.endTime)}
+            onChange={(e) => handleTimeChange(index, "endTime", e.target.value)}
             required
           />
         </div>
@@ -70,7 +88,7 @@ export default function ScheduleComponent({
               handleScheduleChange(
                 index,
                 "redDuration",
-                parseInt(e.target.value)
+                parseInt(e.target.value, 10)
               )
             }
             required
@@ -93,7 +111,7 @@ export default function ScheduleComponent({
               handleScheduleChange(
                 index,
                 "yellowDuration",
-                parseInt(e.target.value)
+                parseInt(e.target.value, 10)
               )
             }
             required
@@ -113,7 +131,7 @@ export default function ScheduleComponent({
               handleScheduleChange(
                 index,
                 "greenDuration",
-                parseInt(e.target.value)
+                parseInt(e.target.value, 10)
               )
             }
             required

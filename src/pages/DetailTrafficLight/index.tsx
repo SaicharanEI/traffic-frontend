@@ -64,12 +64,23 @@ function TrafficLightDetail() {
       let currentColorDuration = 0;
 
       data?.data.schedules?.forEach((schedule: TrafficLightSchedule) => {
-        const startTimeParts = schedule.startTime.split(":");
-        const endTimeParts = schedule.endTime.split(":");
-        const startHour = parseInt(startTimeParts[0], 10);
-        const startMinute = parseInt(startTimeParts[1], 10);
-        const endHour = parseInt(endTimeParts[0], 10);
-        const endMinute = parseInt(endTimeParts[1], 10);
+        const startTimeparts = schedule.startTime.split("T")[1];
+        const [startHours, startMinutes] = startTimeparts.split(":");
+        const startHour = parseInt(startHours, 10);
+        const startMinute = parseInt(startMinutes, 10);
+
+        const endTimeparts = schedule.endTime.split("T")[1];
+        const [endHours, endMinutes] = endTimeparts.split(":");
+        const endHour = parseInt(endHours, 10);
+        const endMinute = parseInt(endMinutes, 10);
+
+        console.log(endHours, endMinutes, "endHours");
+        // const startTimeParts = schedule.startTime.split(":");
+        // const endTimeParts = schedule.endTime.split(":");
+        // const startHour = parseInt(startTimeParts[0], 10);
+        // const startMinute = parseInt(startTimeParts[1], 10);
+        // const endHour = parseInt(endTimeParts[0], 10);
+        // const endMinute = parseInt(endTimeParts[1], 10);
 
         const startTotalMinutes = startHour * 60 + startMinute;
         const endTotalMinutes = endHour * 60 + endMinute;

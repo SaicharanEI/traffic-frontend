@@ -76,7 +76,7 @@ export function TrafficLightEditComponent({
       }
     }
 
-    const updatedTrafficLight: TrafficLight = {
+    const updatedTrafficLight = {
       ...trafficLight,
       name,
       location,

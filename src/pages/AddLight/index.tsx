@@ -74,6 +74,7 @@ function AddTrafficLightForm() {
       });
       return;
     }
+
     if (schedules.length >= 1) {
       for (let i = 0; i < schedules.length; i++) {
         if (
