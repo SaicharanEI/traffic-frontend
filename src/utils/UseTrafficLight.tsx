@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   TrafficLightSchedule,
   TrafficLight,
-} from "../components/icons/Interfaces/trafficLight";
+} from "../components/Interfaces/trafficLight";
 
 export default function useTrafficLight(light: TrafficLight | undefined) {
   const [trafficLight, setTrafficLight] = useState<TrafficLight | undefined>(

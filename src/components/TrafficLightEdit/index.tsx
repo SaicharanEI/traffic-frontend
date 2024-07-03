@@ -1,9 +1,6 @@
 import { useState } from "react";
 import TrafficLightComponent from "../TrafficLight";
-import {
-  TrafficLight,
-  TrafficLightSchedule,
-} from "../icons/Interfaces/trafficLight";
+import { TrafficLight, TrafficLightSchedule } from "../Interfaces/trafficLight";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteScheduleById, updateLightDetails } from "../../utils/api";
 import Toast from "../../utils/Toast";

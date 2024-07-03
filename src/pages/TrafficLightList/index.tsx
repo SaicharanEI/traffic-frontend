@@ -9,7 +9,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { MdDelete, MdEditSquare, MdVisibility } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { TrafficLight } from "../../components/icons/Interfaces/trafficLight";
+import { TrafficLight } from "../../components/Interfaces/trafficLight";
 import "../../App.css";
 import "./index.css";
 import Spinner from "../../utils/Spinner/Spinner";
@@ -18,7 +18,7 @@ import { deleteLightById, fetchLights } from "../../utils/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Toast from "../../utils/Toast";
 import TrafficLightItem from "./TrafficLightItem";
-import NotFound from "../NotFound/NotFound";
+import NotFound from "../NotFound";
 
 const columns = [
   { id: "id", label: "id", minWidth: 100, align: "center" },

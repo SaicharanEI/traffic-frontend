@@ -3,7 +3,7 @@ import "./index.css";
 import { changeAutomaticMode, fetchLightById } from "../../utils/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { TrafficLightSchedule } from "../../components/icons/Interfaces/trafficLight";
+import { TrafficLightSchedule } from "../../components/Interfaces/trafficLight";
 import Toast from "../../utils/Toast";
 
 function TrafficLightDetail() {

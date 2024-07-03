@@ -6,5 +6,12 @@
     height: 70vh;
   }
   .not-found-img {
-    width: 400px;
+    width: 600px;
+  }
+
+  .not-found-heading{
+    color: #293b51;
+    font-size: 30px;
+    font-weight: 600;
+    margin: 10px;
   }

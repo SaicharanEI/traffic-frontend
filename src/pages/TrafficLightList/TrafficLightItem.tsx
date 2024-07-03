@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchLightById } from "../../utils/api";
 import "./index.css";
-import { TrafficLightSchedule } from "../../components/icons/Interfaces/trafficLight";
+import { TrafficLightSchedule } from "../../components/Interfaces/trafficLight";
 
 interface TrafficLightItemProps {
   lightId: number;

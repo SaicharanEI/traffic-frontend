@@ -3,7 +3,7 @@ import AddTrafficLightForm from "./pages/AddLight";
 import TrafficLightDetail from "./pages/DetailTrafficLight";
 import TrafficLightList from "./pages/TrafficLightList";
 import "./App.css";
-import NotFound from "./pages/NotFound/NotFound";
+import NotFound from "./pages/NotFound";
 import TrafficLightEdit from "./pages/EditTrafficLight";
 function App() {
   return (

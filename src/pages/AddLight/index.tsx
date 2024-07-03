@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TrafficLightSchedule } from "../../components/icons/Interfaces/trafficLight";
+import { TrafficLightSchedule } from "../../components/Interfaces/trafficLight";
 import "../../App.css";
 import TrafficLightComponent from "../../components/TrafficLight";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

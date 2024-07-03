@@ -7,7 +7,7 @@
 }
 
 .traffic-list-header{
-    display: flex; /* Use flexbox */
+  display: flex; 
   justify-content: space-between;
   align-items: center;
 }
