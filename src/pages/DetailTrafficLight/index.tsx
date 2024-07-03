@@ -12,7 +12,6 @@ function TrafficLightDetail() {
   const { isLoading, data, isError } = useQuery({
     queryKey: ["DetailedTrafficLight", lightId],
     queryFn: () => fetchLightById(lightId),
-    staleTime: Infinity,
   });
 
   const { mutate: updateLightMode } = useMutation({

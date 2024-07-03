@@ -50,7 +50,7 @@ export const fetchLightById = async (id: number) => {
 
   return response.data;
 }catch (error: any) {
-        console.log(error.response.data.message)
+      console.log(error.response.data.message)
   }
 };
 

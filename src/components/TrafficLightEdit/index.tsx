@@ -72,7 +72,7 @@ export function TrafficLightEditComponent({
         ) {
           Toast.fire({
             icon: "error",
-            title: "All fields in schedule are required",
+            title: `All fields in schedule ${i + 1} are required`,
           });
           return;
         }

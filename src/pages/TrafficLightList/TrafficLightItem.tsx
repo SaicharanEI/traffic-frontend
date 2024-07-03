@@ -12,7 +12,6 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
   const { isLoading, data, isError } = useQuery({
     queryKey: ["DetailedTrafficLight", lightId],
     queryFn: () => fetchLightById(lightId),
-    staleTime: Infinity,
   });
 
   const firstRender = useRef(true);
@@ -134,7 +133,7 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
   }, [currentColorIndex, mode]);
 
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return <p>Loading...</p>;
   }
 
   if (isError || !data?.data) {

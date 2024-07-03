@@ -35,7 +35,6 @@ const TrafficList = () => {
   const { isLoading, data } = useQuery({
     queryKey: ["fetchLights"],
     queryFn: fetchLights,
-    staleTime: Infinity,
   });
 
   const queryClient = useQueryClient();
@@ -83,7 +82,7 @@ const TrafficList = () => {
   const handleViewTrafficLight = (lightId: number) => {
     navigate(`/traffic-light/${lightId}`);
   };
-
+  console.log(data?.data?.length);
   if (data?.data?.length === 0 && !isLoading) {
     return (
       <>
