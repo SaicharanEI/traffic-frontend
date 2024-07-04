@@ -11,4 +11,6 @@ const Toast = Swal.mixin({
   },
 });
 
-export default Toast;
+export const showToast = (icon: "success" | "error", title: string) => {
+  Toast.fire({ icon, title });
+};

@@ -2,7 +2,7 @@ import RingLoader from "react-spinners/RingLoader";
 
 import "./Spinner.css";
 
-function Spinner() {
+function Spinner(): JSX.Element {
   return (
     <div className="spinner-loader">
       <RingLoader size={60} aria-label="Loading Spinner" color="#124577" />

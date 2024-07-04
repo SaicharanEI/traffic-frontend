@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { fetchLightById } from "../../utils/api";
-import "./index.css";
 import { TrafficLightSchedule } from "../../components/Interfaces/trafficLight";
+import "./index.css";
 
 interface TrafficLightItemProps {
   lightId: number;
 }
 
-const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
+const TrafficLightItem = ({ lightId }: TrafficLightItemProps): JSX.Element => {
   const { isLoading, data, isError } = useQuery({
     queryKey: ["DetailedTrafficLight", lightId],
     queryFn: () => fetchLightById(lightId),
@@ -16,11 +17,11 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
 
   const firstRender = useRef(true);
   const queryClient = useQueryClient();
-  const colors = ["red", "yellow", "green"];
   const [remainingTime, setRemainingTime] = useState<number>(0);
   const [currentColorIndex, setCurrentColorIndex] = useState<number>(1);
   const [mode, setMode] = useState<boolean>(false);
 
+  const colors = ["red", "yellow", "green"];
   useEffect(() => {
     if (firstRender.current) {
       setCurrentColorIndex(
@@ -75,11 +76,11 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
       }
 
       if (!scheduleMatched) {
+        scheduleMatched = true;
         setRemainingTime(0);
         setCurrentColorIndex(1);
       }
     };
-
     calculateRemainingTime();
 
     const interval = setInterval(() => {
@@ -144,8 +145,8 @@ const TrafficLightItem: React.FC<TrafficLightItemProps> = ({ lightId }) => {
   }
 
   return (
-    <div className="traffic-list-item">
-      <div className="traffic-list-item-colors">
+    <div className="d-flex flex-row justify-content-around align-items-center">
+      <div className="d-flex flex-row justify-content-start gap-3 align-items-center">
         {colors.map((color, index) => (
           <div
             key={color}

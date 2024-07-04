@@ -1,12 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ThemeProvider } from "@emotion/react";
-import { BrowserRouter } from "react-router-dom";
-import App from "./App";
-import "./index.css";
-import theme from "./utils/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { BrowserRouter } from "react-router-dom";
+
+import App from "./App";
+import "./index.css";
 
 // const queryClient = new QueryClient({
 //   defaultOptions: {
@@ -38,17 +37,15 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
-          {/* <PersistQueryClientProvider
+      <QueryClientProvider client={queryClient}>
+        {/* <PersistQueryClientProvider
           client={queryClient}
           persistOptions={{ persister }}
         > */}
-          <App />
-          <ReactQueryDevtools client={queryClient} />
-        </QueryClientProvider>
-        {/* </PersistQueryClientProvider> */}
-      </ThemeProvider>
+        <App />
+        <ReactQueryDevtools client={queryClient} />
+      </QueryClientProvider>
+      {/* </PersistQueryClientProvider> */}
     </BrowserRouter>
   </React.StrictMode>
 );

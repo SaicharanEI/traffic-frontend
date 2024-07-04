@@ -1,86 +1,123 @@
-import { useEffect, useState } from "react";
-import {
-  TrafficLightSchedule,
-  TrafficLight,
-} from "../components/Interfaces/trafficLight";
+// import { useEffect, useState } from "react";
+// import {
+//   TrafficLightSchedule,
+//   TrafficLight,
+// } from "../components/Interfaces/trafficLight";
+// import { useQueryClient } from "@tanstack/react-query";
 
-export default function useTrafficLight(light: TrafficLight | undefined) {
-  const [trafficLight, setTrafficLight] = useState<TrafficLight | undefined>(
-    light
-  );
-  const colors = ["red", "yellow", "green"];
-  const [remainingTime, setRemainingTime] = useState<number>(0);
-  const [currentColorIndex, setCurrentColorIndex] = useState<number>(0);
+// export default function useTrafficLight({data}) {
 
-  useEffect(() => {
-    if (!light) return;
+//   const colors = ["red", "yellow", "green"];
+//   const [remainingTime, setRemainingTime] = useState<number>(0);
+//   const [currentColorIndex, setCurrentColorIndex] = useState<number>(0);
+//   const [mode, setMode] = useState<boolean>(false);
+//   const queryClient = useQueryClient();
 
-    setTrafficLight(light);
+//   useEffect(() => {
+//     if (!data?.data) return;
+//     if (!mode) return;
+//     const calculateRemainingTime = () => {
+//       const now = new Date();
+//       const currentHour = now.getHours();
+//       const currentMinute = now.getMinutes();
+//       const currentTotalMinutes = currentHour * 60 + currentMinute;
+//       let currentColor = "";
+//       let scheduleMatched = false;
+//       let currentColorDuration = 0;
 
-    const calculateRemainingTime = () => {
-      const now = new Date();
-      const currentHour = now.getHours();
-      const currentMinute = now.getMinutes();
-      const currentTotalMinutes = currentHour * 60 + currentMinute;
-      let currentColor = "";
-      let currentColorDuration = 0;
+//       data?.data.schedules?.forEach((schedule: TrafficLightSchedule) => {
+//         const startTimeparts = schedule.startTime.split("T")[1];
+//         const [startHours, startMinutes] = startTimeparts.split(":");
+//         const startHour = parseInt(startHours, 10);
+//         const startMinute = parseInt(startMinutes, 10);
 
-      light.schedules?.forEach((schedule: TrafficLightSchedule) => {
-        const startTimeParts = schedule.startTime.split(":");
-        const endTimeParts = schedule.endTime.split(":");
-        const startHour = parseInt(startTimeParts[0], 10);
-        const startMinute = parseInt(startTimeParts[1], 10);
-        const endHour = parseInt(endTimeParts[0], 10);
-        const endMinute = parseInt(endTimeParts[1], 10);
+//         const endTimeparts = schedule.endTime.split("T")[1];
+//         const [endHours, endMinutes] = endTimeparts.split(":");
+//         const endHour = parseInt(endHours, 10);
+//         const endMinute = parseInt(endMinutes, 10);
 
-        const startTotalMinutes = startHour * 60 + startMinute;
-        const endTotalMinutes = endHour * 60 + endMinute;
+//         const startTotalMinutes = startHour * 60 + startMinute;
+//         const endTotalMinutes = endHour * 60 + endMinute;
+//         if (
+//           currentTotalMinutes >= startTotalMinutes &&
+//           currentTotalMinutes < endTotalMinutes
+//         ) {
+//           scheduleMatched = true;
+//           currentColor = colors[currentColorIndex];
+//           currentColorDuration =
+//             (schedule as any)[`${currentColor.toLowerCase()}Duration`] || 0;
+//         }
+//       });
 
-        if (
-          currentTotalMinutes >= startTotalMinutes &&
-          currentTotalMinutes < endTotalMinutes
-        ) {
-          currentColor = colors[currentColorIndex];
-          currentColorDuration =
-            (schedule as any)[`${currentColor.toLowerCase()}Duration`] || 0;
-        }
-      });
+//       const colorIndex = colors.findIndex((color) => color === currentColor);
+//       if (colorIndex !== -1) {
+//         if (!firstRender.current) {
+//           setRemainingTime(currentColorDuration);
+//         }
+//       }
 
-      const colorIndex = colors.findIndex((color) => color === currentColor);
-      if (colorIndex !== -1) {
-        setCurrentColorIndex(colorIndex);
-        setRemainingTime(currentColorDuration);
-      }
-    };
+//       if (!scheduleMatched) {
+//         scheduleMatched = true;
+//         setRemainingTime(0);
+//         setCurrentColorIndex(1);
+//       }
+//     };
+//     calculateRemainingTime();
 
-    calculateRemainingTime();
+//     const interval = setInterval(() => {
+//       firstRender.current = false;
+//       setRemainingTime((prevTime: number) => {
+//         if (prevTime <= 1) {
+//           const nextColorIndex = (currentColorIndex + 1) % colors.length;
+//           const nextColor = colors[nextColorIndex];
+//           let nextColorDuration = 0;
+//           data?.data.schedules.forEach((schedule: TrafficLightSchedule) => {
+//             nextColorDuration =
+//               (schedule as any)[`${nextColor.toLowerCase()}Duration`] || 0;
+//           });
+//           queryClient.setQueryData(
+//             ["DetailedTrafficLight", lightId],
+//             (oldData: any) => ({
+//               ...oldData,
+//               data: {
+//                 ...oldData.data,
+//                 currentColor: nextColor,
+//               },
+//             })
+//           );
 
-    const interval = setInterval(() => {
-      setRemainingTime((prevTime: number) => {
-        if (prevTime <= 1) {
-          const nextColorIndex = (currentColorIndex + 1) % colors.length;
-          const nextColor = colors[nextColorIndex];
-          let nextColorDuration = 0;
-          light.schedules.forEach((schedule: TrafficLightSchedule) => {
-            nextColorDuration =
-              (schedule as any)[`${nextColor.toLowerCase()}Duration`] || 0;
-          });
+//           queryClient.setQueryData(
+//             ["DetailedTrafficLight", lightId],
+//             (oldData: any) => ({
+//               ...oldData,
+//               data: {
+//                 ...oldData.data,
+//                 timeRemaining: nextColorDuration,
+//               },
+//             })
+//           );
+//           setCurrentColorIndex(nextColorIndex);
+//           return nextColorDuration;
+//         } else {
+//           queryClient.setQueryData(
+//             ["DetailedTrafficLight", lightId],
+//             (oldData: any) => ({
+//               ...oldData,
+//               data: {
+//                 ...oldData.data,
+//                 timeRemaining: prevTime - 1,
+//               },
+//             })
+//           );
+//           return prevTime - 1;
+//         }
+//       });
+//     }, 1000);
 
-          setCurrentColorIndex(nextColorIndex);
-          return nextColorDuration;
-        } else {
-          return prevTime - 1;
-        }
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [light, currentColorIndex, trafficLight]);
-
-  return {
-    currentColorIndex,
-    remainingTime,
-    trafficLight,
-    setCurrentColorIndex,
-  };
-}
+//   return {
+//     currentColorIndex,
+//     remainingTime,
+//     trafficLight,
+//     setCurrentColorIndex,
+//   };
+// }

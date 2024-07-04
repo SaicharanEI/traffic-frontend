@@ -1,12 +1,13 @@
 import { useParams } from "react-router-dom";
-import "./index.css";
-import { changeAutomaticMode, fetchLightById } from "../../utils/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { TrafficLightSchedule } from "../../components/Interfaces/trafficLight";
-import Toast from "../../utils/Toast";
 
-function TrafficLightDetail() {
+import { changeAutomaticMode, fetchLightById } from "../../utils/api";
+import { TrafficLightSchedule } from "../../components/Interfaces/trafficLight";
+import { showToast } from "../../utils/Toast";
+import "./index.css";
+
+function TrafficLightDetail(): JSX.Element {
   const lightId = Number(useParams<{ id: string }>().id);
 
   const { isLoading, data, isError } = useQuery({
@@ -27,20 +28,17 @@ function TrafficLightDetail() {
         queryClient.invalidateQueries({
           queryKey: ["FetchTrafficLightById", lightId],
         }),
-        Toast.fire({
-          icon: "success",
-          title: responseData.message,
-        });
+        showToast("success", responseData.message);
     },
   });
 
   const firstRender = useRef(true);
   const queryClient = useQueryClient();
-  const colors = ["red", "yellow", "green"];
   const [remainingTime, setRemainingTime] = useState<number>(0);
   const [mode, setMode] = useState<boolean>(false);
   const [currentColorIndex, setCurrentColorIndex] = useState<number>(1);
 
+  const colors = ["red", "yellow", "green"];
   useEffect(() => {
     if (firstRender.current) {
       setRemainingTime(data?.data.timeRemaining);
@@ -74,17 +72,8 @@ function TrafficLightDetail() {
         const endHour = parseInt(endHours, 10);
         const endMinute = parseInt(endMinutes, 10);
 
-        console.log(endHours, endMinutes, "endHours");
-        // const startTimeParts = schedule.startTime.split(":");
-        // const endTimeParts = schedule.endTime.split(":");
-        // const startHour = parseInt(startTimeParts[0], 10);
-        // const startMinute = parseInt(startTimeParts[1], 10);
-        // const endHour = parseInt(endTimeParts[0], 10);
-        // const endMinute = parseInt(endTimeParts[1], 10);
-
         const startTotalMinutes = startHour * 60 + startMinute;
         const endTotalMinutes = endHour * 60 + endMinute;
-
         if (
           currentTotalMinutes >= startTotalMinutes &&
           currentTotalMinutes < endTotalMinutes
@@ -113,7 +102,7 @@ function TrafficLightDetail() {
 
     const interval = setInterval(() => {
       firstRender.current = false;
-      setRemainingTime((prevTime: number) => {
+      setRemainingTime((prevTime: number): number => {
         if (prevTime <= 1) {
           const nextColorIndex = (currentColorIndex + 1) % colors.length;
           const nextColor = colors[nextColorIndex];
@@ -171,7 +160,7 @@ function TrafficLightDetail() {
     return <h1 className="app-main-heading">Traffic Light not found</h1>;
   }
 
-  const changeMode = (change: boolean, color: string) => {
+  const changeMode = (change: boolean, color: string): void => {
     updateLightMode({ id: lightId, mode: change, color: color });
     setCurrentColorIndex(colors.findIndex((c) => c === color));
     setMode(change);

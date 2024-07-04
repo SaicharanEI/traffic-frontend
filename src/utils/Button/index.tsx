@@ -1,24 +1,26 @@
-import React from "react";
 import { LoaderIcon } from "../../components/icons";
 import "./index.css";
 
 interface ButtonProps {
-  onSubmit: () => void;
+  onSubmit: (event: any) => void;
   text: string;
   loading?: boolean;
   disabled?: boolean;
+  type: "button" | "submit" | "reset" | undefined;
 }
-const Button: React.FC<ButtonProps> = ({
+function Button({
   onSubmit,
   text,
   loading = false,
   disabled,
-}) => {
+  type,
+}: ButtonProps) {
   return (
     <button
-      className="loader-spinner-button"
+      className="app-main-button mt-3"
       onClick={onSubmit}
       disabled={disabled || loading}
+      type={type}
     >
       {!loading ? (
         text
@@ -29,6 +31,6 @@ const Button: React.FC<ButtonProps> = ({
       )}
     </button>
   );
-};
+}
 
 export default Button;
