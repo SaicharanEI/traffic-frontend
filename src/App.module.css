@@ -1,5 +1,4 @@
 #root {
-  /* max-width: 1280px; */
   margin: 0 auto;
   width: 100vw;
   height: 100vh;
@@ -7,7 +6,7 @@
   overflow-y: scroll;
 }
 
-.app-main-button{
+.app_main_button{
   background-color: #293b51;
   border: none;
   border: #293b51 2px solid;
@@ -19,27 +18,29 @@
   cursor: pointer;
 }
 
-.app-main-button:hover{
+.app_main_button:hover{
   background-color: #fff;
   border: #293b51 2px solid;
   color: #293b51;
+  
 }
-.not-found-image{
+.not_found_image{
   width: 400px;
   height: 400px;
 }
 
-.app-main-heading{
+.app_main_heading{
   font-size: 28px;
   font-weight: 700;
   color: #293b51;
+  
 }
-.app-main-heading2{
+.app_main_heading2{
   font-size: 22px;
   font-weight: 700;
 }
 
-.form-label{
+.form_label{
   margin-top: 15px;
   align-self: flex-start;
   font-weight: 600;

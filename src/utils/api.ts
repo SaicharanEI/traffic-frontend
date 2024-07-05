@@ -21,12 +21,12 @@ export const addLight = async (light: any) => {
     );
     return response.data;
   } catch (error: any) {
-    console.error(error);
     showToast("error", error.response?.data?.message);
   }
 };
 
 export const updateLightDetails = async (light: any) => {
+  console.log(light.schedules);
   try {
     const response = await axios.put(
       `${import.meta.env.VITE_API_BASE_URL}traffic-light/${light.id}`,
@@ -85,8 +85,6 @@ export const changeAutomaticMode = async ({
   mode,
   color,
 }: changeModeProps) => {
-  console.log({ id, mode, color });
-
   try {
     const response = await axios.put(
       `${import.meta.env.VITE_API_BASE_URL}traffic-light/${id}/change-mode`,

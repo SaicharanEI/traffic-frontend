@@ -6,10 +6,10 @@ import {
   addLight,
   updateLightDetails,
   deleteScheduleById,
-} from "../../utils/api";
+} from "../../utils/Api";
 import { showToast } from "../../utils/Toast";
-import { TrafficLight, TrafficLightSchedule } from "../Interfaces/trafficLight";
-import TrafficLightComponent from "./index";
+import { TrafficLight, TrafficLightSchedule } from "../../types/TrafficLight";
+import TrafficLightComponent from "./Component";
 
 interface TrafficLightFormProps {
   initialData?: TrafficLight;
@@ -36,11 +36,8 @@ function TrafficLightForm({
     onSuccess: (responseData) => {
       queryClient.invalidateQueries({ queryKey: ["fetchLights"] });
       queryClient.invalidateQueries({
-        queryKey: ["DetailedTrafficLight", Number(initialData?.id)],
+        queryKey: ["FetchTrafficLightById", Number(initialData?.id)],
       }),
-        queryClient.invalidateQueries({
-          queryKey: ["FetchTrafficLightById", Number(initialData?.id)],
-        }),
         showToast("success", responseData.message);
       if (formType === "add") {
         setName("");
@@ -86,8 +83,23 @@ function TrafficLightForm({
   const handleScheduleChange = (
     index: number,
     field: keyof TrafficLightSchedule,
-    value: string | number
+    value: number
   ): void => {
+    console.log(index, field, value, typeof value);
+    if (
+      field === "yellowDuration" ||
+      field === "redDuration" ||
+      field === "greenDuration"
+    ) {
+      if (value) {
+        setSchedules((prev) =>
+          prev.map((item, i) =>
+            i === index ? { ...item, [field]: Number(value) } : item
+          )
+        );
+        return;
+      }
+    }
     setSchedules((prev) =>
       prev.map((item, i) => (i === index ? { ...item, [field]: value } : item))
     );
@@ -98,6 +110,7 @@ function TrafficLightForm({
       showToast("error", "Name and Location are required");
       return false;
     }
+
     if (schedules.length) {
       for (let i = 0; i < schedules.length; i++) {
         if (
@@ -116,7 +129,6 @@ function TrafficLightForm({
   const handleSubmit = async (event: Event) => {
     event.preventDefault();
     if (checkvalidity() === false) {
-      event.stopPropagation();
       return;
     }
     setValidated(true);

@@ -1,12 +1,11 @@
-
 export interface TrafficLightSchedule {
-  id: number | undefined;
+  id?: number;
   timePeriod: string;
   startTime: string;
   endTime: string;
-  redDuration?: number;
-  yellowDuration?: number;
-  greenDuration?: number;
+  redDuration: number;
+  yellowDuration: number;
+  greenDuration: number;
 }
 
 export interface TrafficLight {
@@ -16,7 +15,3 @@ export interface TrafficLight {
   schedules: TrafficLightSchedule[];
   currentColor: string;
 }
-
-
-
-

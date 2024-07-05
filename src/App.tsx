@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import AddTrafficLightForm from "./pages/AddLight";
-import TrafficLightDetail from "./pages/DetailTrafficLight";
-import TrafficLightList from "./pages/TrafficLightList";
-import "./App.css";
-import NotFound from "./pages/NotFound";
-import TrafficLightEdit from "./pages/EditTrafficLight";
+import AddTrafficLightForm from "./pages/addLight";
+import TrafficLightDetail from "./pages/detailTrafficLight";
+import TrafficLightList from "./pages/trafficLightList";
+import NotFound from "./pages/notFound";
+import TrafficLightEdit from "./pages/editTrafficLight";
+
 function App() {
   return (
     <Routes>

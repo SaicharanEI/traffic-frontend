@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-import { fetchLightById } from "../../utils/api";
-import Spinner from "../../utils/Spinner/Spinner";
-import NotFound from "../NotFound";
-import TrafficLightForm from "../../components/TrafficLight/TrafficLightForm.tsx";
+import { fetchLightById } from "../../utils/Api.ts";
+import Spinner from "../../components/spinner/index.tsx";
+import NotFound from "../notFound/index.tsx";
+import TrafficLightForm from "../../components/trafficLight/TrafficForm.tsx";
 
 const TrafficLightEdit = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();

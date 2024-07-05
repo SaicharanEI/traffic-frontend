@@ -1,0 +1,102 @@
+  
+  .traffic_light {
+    background: #222;
+    background-image: linear-gradient(transparent 2%, #111 2%, transparent 3%, #111 30%);
+    width: 100px;
+    height: 270px;
+    border-radius: 20px;
+    position: relative;
+    border: solid 5px #333;
+    z-index: 0;
+  }
+  .traffic_light:after {
+    background: #222;
+     background-image: linear-gradient(-0deg,  #000);
+    content: "";
+    width: 25px;
+    height: 320px;
+    margin-left: -15px;
+    position: absolute;
+    top: 250px;
+    z-index: -1;
+  }
+  
+  .protector {
+    background: transparent;
+    width: 170px;
+    height: 0;
+    position: absolute;
+    top: 10px;
+    left: -40px;
+    border-right: solid 30px transparent;
+    border-left: solid 30px transparent;
+    border-top: solid 85px #111;
+    border-radius: 10px;
+    z-index: -1;
+  }
+  
+  .protector:nth-child(2) {
+    top: 85px;
+  }
+  
+  .protector:nth-child(3) {
+    top: 165px;
+  }
+  .protector:nth-child(4) {
+    top: 240px;
+  }
+
+  .red, .yellow, .green {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    position: absolute;
+    left: 13px;
+    border: dotted 2px;
+  }
+  
+  .red {
+    top: 10px;
+    border-color: red;
+  }
+  
+  .yellow {
+    top: 90px;
+    border-color: yellow;
+  }
+  
+  .green {
+    top: 170px;
+    border-color: green;
+  }
+  
+  .time_container{
+    margin-top: 270px;
+    background: #222;
+    background-image: linear-gradient(transparent 2%, #111 2%, transparent 3%, #111 30%);
+    width: 100px;
+    height: 70px;
+    border-radius: 20px;
+    position: relative;
+    border: solid 5px #333;
+    display: flex;
+    margin-left: -5px;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+  }
+  
+  .traffic_light_time {
+    width: 90%;
+    height: 90%;
+    color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    border: 2px dotted red;
+    font-size: 40px ;
+    font-weight: bold;
+  }
+
+  

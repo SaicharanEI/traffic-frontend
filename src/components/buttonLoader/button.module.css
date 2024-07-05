@@ -1,0 +1,11 @@
+.spinner_button {
+  animation-name: loaderspinner;
+  animation-duration: 500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  width: 20px;
+}
+
+.spinner {
+  animation: loaderspinner 1s forwards infinite;
+}
