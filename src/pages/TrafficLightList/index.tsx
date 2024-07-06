@@ -2,14 +2,13 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../../components/spinner";
-import { deleteLightById, fetchLights } from "../../utils/Api";
+import Spinner from "../../components/Spinner";
+import { deleteLightById, fetchLights } from "../../service/trafficLight";
 import NotFound from "../notFound";
 import { showToast } from "../../utils/Toast";
 import Pagination from "./Pagination";
 import TrafficTable from "./Table";
 import Button from "../../components/button";
-import styles from "../../../src/App.module.css";
 
 const TrafficList = (): JSX.Element => {
   const [page, setPage] = useState(0);
@@ -50,7 +49,7 @@ const TrafficList = (): JSX.Element => {
         <NotFound heading="No Traffic Lights Found" />
         <Button
           type="button"
-          title="Add Traffic Light"
+          text="Add Traffic Light"
           onClick={() => navigate("/add-traffic-light")}
         />
       </>
@@ -61,16 +60,13 @@ const TrafficList = (): JSX.Element => {
     <div className="container-fluid">
       <div className="row p-3">
         <div className="d-flex flex-row justify-content-between align-items-center">
-          <h1
-            className={`${styles.app_main_heading}  text-center`}
-            style={{ flex: "1" }}
-          >
+          <h1 className="appMainHeading  text-center" style={{ flex: "1" }}>
             Traffic Lights
           </h1>
           <Button
             className="margin-left-auto"
             type="button"
-            title="Add Traffic Light"
+            text="Add Traffic Light"
             onClick={() => navigate("/add-traffic-light")}
           />
         </div>

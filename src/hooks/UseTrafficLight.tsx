@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchLightById } from "../utils/Api";
+import { fetchLightById } from "../service/trafficLight";
 import { TrafficLightSchedule } from "../types/TrafficLight";
 
 const useTrafficLight = (lightId: number) => {
   const { isLoading, data, isError } = useQuery({
     queryKey: ["FetchTrafficLightById", lightId],
     queryFn: () => fetchLightById(lightId),
+    enabled: !!lightId,
   });
 
   const firstRender = useRef(true);

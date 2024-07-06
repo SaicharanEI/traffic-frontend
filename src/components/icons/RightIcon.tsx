@@ -1,9 +1,6 @@
-export interface RightIconProps {
-  size?: number;
-  className?: string;
-}
+import { IconProps } from "./type-icon";
 
-export function RightIcon({ size = 12, className = "" }: RightIconProps) {
+export function RightIcon({ size = 12, className = "" }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

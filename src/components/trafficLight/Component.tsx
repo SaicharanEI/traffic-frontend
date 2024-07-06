@@ -1,12 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
 
-import ButtonLoader from "../buttonLoader";
 import { TrafficLightSchedule } from "../../types/TrafficLight";
-import ScheduleComponent from "./Schedule";
-import InputGroup from "../input";
+import { ScheduleComponent } from ".";
+import InputGroup from "../Input";
 import Button from "../button";
-import styles from "../../App.module.css";
 
 interface TrafficLightComponentFormProps {
   name: string;
@@ -23,7 +21,7 @@ interface TrafficLightComponentFormProps {
   validated: boolean;
 }
 
-export default function TrafficLightComponent({
+export function TrafficLightComponent({
   ...props
 }: TrafficLightComponentFormProps) {
   return (
@@ -35,12 +33,12 @@ export default function TrafficLightComponent({
           className="col-11 col-md-8 col-lg-5 bg-light shadow-lg p-3 m-5 bg-body rounded min-vh-80 d-flex flex-column justify-content-center align-items-center"
           onSubmit={props.handleSubmit}
         >
-          <h1 className={`${styles.app_main_heading} m-3`}>{props.heading}</h1>
+          <h1 className="appMainHeading m-3">{props.heading}</h1>
           <div className="align-self-end">
             <Button
               onClick={props.handleAddSchedule}
               type="button"
-              title="Add Schedule"
+              text="Add Schedule"
             />
           </div>
           <div className="w-75">
@@ -68,10 +66,10 @@ export default function TrafficLightComponent({
               handleRemoveSchedule={props.handleRemoveSchedule}
             />
           ))}
-          <ButtonLoader
+          <Button
             type="submit"
             text={props.heading}
-            onSubmit={props.handleSubmit}
+            onClick={props.handleSubmit}
             loading={props.updateIsPending}
             disabled={props.updateIsPending}
           />

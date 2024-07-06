@@ -1,5 +1,5 @@
-.list_item_time{
-    width: 40px;
+.listItemTime{
+    width: 45px;
     height: 25px;
     color: red;
     display: flex;
@@ -14,7 +14,7 @@
     width: 20px;
     height: 20px;
 }
-.icon_button{
+.iconButton{
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -23,7 +23,7 @@
     appearance: none;
     margin: 0
 }
-.icon_button_disabled{
+.iconButtonDisabled{
     background-color: transparent;
     border: none;
     cursor: pointer;

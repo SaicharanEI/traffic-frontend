@@ -1,6 +1,5 @@
-import useTrafficLight from "../../hooks/UseTrafficLight";
+import useTrafficLight from "../../hooks/useTrafficLight";
 import styles from "./list.module.css";
-import classes from "../../../src/App.module.css";
 
 interface TrafficLightItemProps {
   lightId: number;
@@ -13,9 +12,7 @@ const TrafficLightItem = ({ lightId }: TrafficLightItemProps): JSX.Element => {
   }
 
   if (data.isError || !data.data?.data) {
-    return (
-      <h1 className={classes["app-main-heading"]}>Traffic Light not found</h1>
-    );
+    return <h1 className="app-main-heading">Traffic Light not found</h1>;
   }
 
   return (
@@ -34,7 +31,7 @@ const TrafficLightItem = ({ lightId }: TrafficLightItemProps): JSX.Element => {
           />
         ))}
       </div>
-      <div className={styles.list_item_time}>{data.remainingTime}</div>
+      <div className={styles.listItemTime}>{data.remainingTime}</div>
     </div>
   );
 };

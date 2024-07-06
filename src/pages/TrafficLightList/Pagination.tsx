@@ -35,9 +35,7 @@ function Pagination({
         {totalLights}
       </p>
       <button
-        className={
-          page === 0 ? styles.icon_button_disabled : styles.icon_button
-        }
+        className={page === 0 ? styles.iconButtonDisabled : styles.iconButton}
         disabled={page === 0}
         onClick={() => props.onPageChange(page - 1)}
       >
@@ -46,8 +44,8 @@ function Pagination({
       <button
         className={
           endIndex >= totalLights
-            ? styles.icon_button_disabled
-            : styles.icon_button
+            ? styles.iconButtonDisabled
+            : styles.iconButton
         }
         disabled={endIndex >= totalLights}
         onClick={() => props.onPageChange(page + 1)}

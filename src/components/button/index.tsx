@@ -1,25 +1,42 @@
-import styles from "../../App.module.css";
+import { LoaderIcon } from "../icons";
+
+import styles from "./button.module.css";
 
 interface ButtonProps {
-  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  title: string;
-  type?: "button" | "submit" | "reset";
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  text: string;
+  loading?: boolean;
+  disabled?: boolean;
+  type?: "button" | "submit";
   className?: string;
 }
 
 function Button({
-  onClick,
+  loading = false,
   type = "button",
-  title,
   className = "",
+  text,
+  disabled,
+  onClick,
 }: ButtonProps) {
   return (
     <button
       type={type}
-      className={`${styles.app_main_button} ${className}`}
+      className={`appMainButton m-3 ${className}`}
+      disabled={disabled || loading}
       onClick={onClick}
     >
-      {title}
+      {type === "submit" ? (
+        !loading ? (
+          text
+        ) : (
+          <span className={styles.spinnerButton}>
+            <LoaderIcon className={styles.spinner} />
+          </span>
+        )
+      ) : (
+        text
+      )}
     </button>
   );
 }

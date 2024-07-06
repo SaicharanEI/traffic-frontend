@@ -2,9 +2,9 @@ import { useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa6";
 
-import { changeAutomaticMode } from "../../utils/Api";
+import { changeAutomaticMode } from "../../service/trafficLight";
 import { showToast } from "../../utils/Toast";
-import useTrafficLight from "../../hooks/UseTrafficLight";
+import useTrafficLight from "../../hooks/useTrafficLight";
 import styles from "./detail.module.css";
 
 function TrafficLightDetail(): JSX.Element {

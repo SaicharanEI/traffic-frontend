@@ -1,7 +1,4 @@
-export interface IconProps {
-  className?: string;
-  size?: number;
-}
+import { IconProps } from "./type-icon";
 
 export function LoaderIcon({ className, size = 12 }: IconProps) {
   return (

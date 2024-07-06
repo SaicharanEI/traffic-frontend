@@ -1,5 +1,9 @@
-
-.app_main_button{
+#root {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+.appMainButton{
   background-color: #293b51;
   border: none;
   min-width: 130px;
@@ -12,31 +16,30 @@
   cursor: pointer;
 }
 
-.app_main_button:disabled{
+.appMainButton:disabled{
   background-color: #fff;
   border: #293b51 2px solid;
   color: #293b51;
 
 }
 
-.app_main_button:hover{
+.appMainButton:hover{
   background-color: #fff;
   border: #293b51 2px solid;
   color: #293b51;
   
 }
-.not_found_image{
+.notFoundImage{
   width: 400px;
-  height: 400px;
 }
 
-.app_main_heading{
+.appMainHeading{
   font-size: 28px;
   font-weight: 700;
   color: #293b51;
   
 }
-.app_main_heading2{
+.appMainHeading2{
   font-size: 22px;
   font-weight: 700;
 }

@@ -6,18 +6,17 @@ import {
   addLight,
   updateLightDetails,
   deleteScheduleById,
-} from "../../utils/Api";
+} from "../../service/trafficLight";
 import { showToast } from "../../utils/Toast";
 import { TrafficLight, TrafficLightSchedule } from "../../types/TrafficLight";
-import TrafficLightComponent from "./Component";
-
+import { TrafficLightComponent } from ".";
 interface TrafficLightFormProps {
   initialData?: TrafficLight;
   formType: "add" | "edit";
   heading: string;
 }
 
-function TrafficLightForm({
+export function TrafficLightForm({
   initialData,
   formType,
   heading,
@@ -83,7 +82,7 @@ function TrafficLightForm({
   const handleScheduleChange = (
     index: number,
     field: keyof TrafficLightSchedule,
-    value: number
+    value: number | string
   ): void => {
     if (
       field === "yellowDuration" ||
@@ -160,5 +159,3 @@ function TrafficLightForm({
     </>
   );
 }
-
-export default TrafficLightForm;

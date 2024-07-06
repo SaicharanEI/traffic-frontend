@@ -1,4 +1,4 @@
-import TrafficLightForm from "../../components/trafficLight/TrafficForm.tsx";
+import { TrafficLightForm } from "../../components/trafficLight";
 const AddTrafficLightForm = () => {
   return <TrafficLightForm formType="add" heading="Add Traffic Light" />;
 };

@@ -1,6 +1,6 @@
 import Button from "../button";
-import InputGroup from "../input";
-import styles from "../../App.module.css";
+import InputGroup from "../Input";
+
 type ScheduleComponentProps = {
   schedule: any;
   index: number;
@@ -8,10 +8,7 @@ type ScheduleComponentProps = {
   handleRemoveSchedule: any;
 };
 
-export default function ScheduleComponent({
-  index,
-  ...props
-}: ScheduleComponentProps) {
+export function ScheduleComponent({ index, ...props }: ScheduleComponentProps) {
   const getHoursMinutes = (time: string): string => {
     if (!time) return "";
     const startTimeparts = time.split("T")[1];
@@ -33,7 +30,7 @@ export default function ScheduleComponent({
 
   return (
     <div className="mt-3 w-75" key={index}>
-      <h3 className={styles.app_main_heading2}>Schedule {index + 1}</h3>
+      <h3 className="app_main_heading2">Schedule {index + 1}</h3>
       <InputGroup
         label="Time Period"
         type="text"
@@ -92,9 +89,8 @@ export default function ScheduleComponent({
       />
       <Button
         onClick={() => props.handleRemoveSchedule(index)}
-        className="mt-3"
         type="button"
-        title="Remove Schedule"
+        text="Remove Schedule"
       />
     </div>
   );

@@ -1,9 +1,7 @@
 import { Form } from "react-bootstrap";
-import styles from "../../App.module.css";
 
 interface InputGroupProps {
   onChange: (e: any) => void;
-  className?: string;
   type?: "text" | "number" | "time";
   placeholder: string;
   value: string;
@@ -17,16 +15,15 @@ function InputGroup({
   placeholder,
   value,
   label,
-  className = "form-control",
   controlId,
 }: InputGroupProps) {
   return (
     <Form.Group controlId={controlId} className="d-flex flex-column">
-      <Form.Label className={styles.form_label}>{label}:</Form.Label>
+      <Form.Label className="form_label">{label}:</Form.Label>
       <Form.Control
         placeholder={placeholder}
         value={value}
-        className={className}
+        className="form-control"
         onChange={onChange}
         required
         type={type}

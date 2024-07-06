@@ -4,6 +4,7 @@ import TrafficLightDetail from "./pages/detailTrafficLight";
 import TrafficLightList from "./pages/trafficLightList";
 import NotFound from "./pages/notFound";
 import TrafficLightEdit from "./pages/editTrafficLight";
+import "./App.css";
 
 function App() {
   return (
