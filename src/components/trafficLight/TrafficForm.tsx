@@ -85,7 +85,6 @@ function TrafficLightForm({
     field: keyof TrafficLightSchedule,
     value: number
   ): void => {
-    console.log(index, field, value, typeof value);
     if (
       field === "yellowDuration" ||
       field === "redDuration" ||

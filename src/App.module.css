@@ -1,14 +1,8 @@
-#root {
-  margin: 0 auto;
-  width: 100vw;
-  height: 100vh;
-  text-align: center;
-  overflow-y: scroll;
-}
 
 .app_main_button{
   background-color: #293b51;
   border: none;
+  min-width: 130px;
   border: #293b51 2px solid;
   border-radius: 5px;
   color: #fff;
@@ -16,6 +10,13 @@
   font-size: 14px;
   padding: 5px 10px;
   cursor: pointer;
+}
+
+.app_main_button:disabled{
+  background-color: #fff;
+  border: #293b51 2px solid;
+  color: #293b51;
+
 }
 
 .app_main_button:hover{

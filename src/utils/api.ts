@@ -9,7 +9,7 @@ export const fetchLights = async () => {
 
     return response.data;
   } catch (error: any) {
-    console.log(error.response.data.message);
+    console.log(error.response.data.message, error);
   }
 };
 
@@ -26,7 +26,6 @@ export const addLight = async (light: any) => {
 };
 
 export const updateLightDetails = async (light: any) => {
-  console.log(light.schedules);
   try {
     const response = await axios.put(
       `${import.meta.env.VITE_API_BASE_URL}traffic-light/${light.id}`,
